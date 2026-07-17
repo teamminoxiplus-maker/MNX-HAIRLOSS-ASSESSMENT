@@ -89,17 +89,25 @@ export function ResultView({
           <p className="mt-2 text-sm text-slate-600">{CONSULT_COPY.body}</p>
           <div className="mt-4 flex flex-col gap-2">
             <a
-              href={CONSULT.facebook}
+              href={CONSULT.messenger}
               className="rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white"
             >
               {CONSULT_COPY.cta}
             </a>
-            <a
-              href={CONSULT.viber}
-              className="rounded-lg border-2 border-slate-200 px-4 py-3 font-semibold text-slate-800"
-            >
-              Viber
-            </a>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href={CONSULT.viber}
+                className="rounded-lg border-2 border-slate-200 px-4 py-3 font-semibold text-slate-800"
+              >
+                Viber
+              </a>
+              <a
+                href={CONSULT.whatsapp}
+                className="rounded-lg border-2 border-slate-200 px-4 py-3 font-semibold text-slate-800"
+              >
+                WhatsApp
+              </a>
+            </div>
             <a
               href={`tel:${CONSULT.phoneIntl}`}
               className="text-sm font-semibold text-blue-700"
@@ -191,9 +199,9 @@ export function ResultView({
       {!referral && (
         <section className="rounded-xl bg-slate-100 p-4 text-center">
           <p className="text-sm text-slate-700">Have a question? Just message us.</p>
-          <div className="mt-3 flex justify-center gap-2">
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
             <a
-              href={CONSULT.facebook}
+              href={CONSULT.messenger}
               className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
             >
               Messenger
@@ -203,6 +211,12 @@ export function ResultView({
               className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800"
             >
               Viber
+            </a>
+            <a
+              href={CONSULT.whatsapp}
+              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800"
+            >
+              WhatsApp
             </a>
           </div>
           <a

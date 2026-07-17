@@ -124,10 +124,12 @@ export const STOREFRONTS = {
 
 // Consult channels (spec §10 §7).
 export const CONSULT = {
-  // Customer care number — opens a Viber chat on mobile.
+  // Customer care number — used for Viber, WhatsApp, and call/text.
   phone: "09062525475",
   phoneIntl: "+639062525475",
   viber: "viber://chat?number=%2B639062525475",
-  facebook: "https://m.me/minoxiplus", // TODO: confirm the real Messenger link
+  whatsapp: "https://wa.me/639062525475",
+  facebook: "https://www.facebook.com/profile.php?id=61573788813937",
+  messenger: "https://m.me/61573788813937",
   email: "care@minoxiplus.com", // TODO: confirm the real support email
 } as const;

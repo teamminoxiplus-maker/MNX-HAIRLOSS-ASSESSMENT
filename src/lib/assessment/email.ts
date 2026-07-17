@@ -35,7 +35,7 @@ function buildHtml({ fullName, result, token }: EmailArgs): string {
     ? `<div style="background:#f1f5f9;border-radius:10px;padding:16px;margin:16px 0">
          <h3 style="margin:0 0 6px">${esc(CONSULT_COPY.heading)}</h3>
          <p style="margin:0 0 12px;font-size:14px;color:#334155">${esc(CONSULT_COPY.body)}</p>
-         <a href="${CONSULT.facebook}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">${esc(CONSULT_COPY.cta)}</a>
+         <a href="${CONSULT.messenger}" style="display:inline-block;background:#1e3a8a;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">${esc(CONSULT_COPY.cta)}</a>
        </div>`
     : `<h3 style="margin:20px 0 6px">${esc(cc.routineIntro)}</h3>` +
       result.recommended_products
