@@ -100,6 +100,12 @@ export function ResultView({
             >
               Viber
             </a>
+            <a
+              href={`tel:${CONSULT.phoneIntl}`}
+              className="text-sm font-semibold text-blue-700"
+            >
+              Call or text: {CONSULT.phone}
+            </a>
           </div>
         </section>
       ) : (
@@ -199,6 +205,12 @@ export function ResultView({
               Viber
             </a>
           </div>
+          <a
+            href={`tel:${CONSULT.phoneIntl}`}
+            className="mt-3 inline-block text-sm font-semibold text-blue-700"
+          >
+            Call or text: {CONSULT.phone}
+          </a>
         </section>
       )}
 

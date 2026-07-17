@@ -89,6 +89,7 @@ function buildHtml({ fullName, result, token }: EmailArgs): string {
         ${timeline}
         ${buy}
         <p style="margin:20px 0 0"><a href="${resultUrl}" style="color:#1e3a8a">Open your full result →</a></p>
+        <p style="margin:10px 0 0;font-size:13px;color:#334155">Questions? Call or Viber: <strong>${esc(CONSULT.phone)}</strong></p>
         <hr style="border:none;border-top:1px solid #e2e8f0;margin:18px 0">
         <p style="font-size:11px;color:#94a3b8;line-height:1.5">${esc(DISCLAIMER)}</p>
       </div>

@@ -117,14 +117,17 @@ export function productName(id: ProductId): string {
 // Storefront buttons for the result page (spec §10 §6).
 export const STOREFRONTS = {
   website: "https://minoxiplus.com",
-  shopee: "https://shopee.ph/minoxiplus",
-  lazada: "https://www.lazada.com.ph/shop/minoxiplus",
-  tiktok: "https://www.tiktok.com/@minoxiplus",
+  shopee: "https://shopee.ph/happylifeorganics",
+  lazada: "https://www.lazada.com.ph/shop/happy-life-organics",
+  tiktok: "https://www.tiktok.com/@minoxiplushairgrower",
 } as const;
 
 // Consult channels (spec §10 §7).
 export const CONSULT = {
-  viber: "https://invite.viber.com/?g2=minoxiplus",
-  facebook: "https://m.me/minoxiplus",
-  email: "care@minoxiplus.com",
+  // Customer care number — opens a Viber chat on mobile.
+  phone: "09062525475",
+  phoneIntl: "+639062525475",
+  viber: "viber://chat?number=%2B639062525475",
+  facebook: "https://m.me/minoxiplus", // TODO: confirm the real Messenger link
+  email: "care@minoxiplus.com", // TODO: confirm the real support email
 } as const;
