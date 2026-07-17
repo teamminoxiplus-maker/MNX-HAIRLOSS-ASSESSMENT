@@ -1,0 +1,56 @@
+  ▲ Next.js 14.2.13
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+./node_modules/@supabase/supabase-js/dist/index.cjs
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/index.cjs
+./src/lib/supabase/server.ts
+./src/lib/assessment/persist.ts
+./src/app/admin/export/route.ts
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (106kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (253kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/14) ...
+   Generating static pages (3/14) 
+   Generating static pages (6/14) 
+   Generating static pages (10/14) 
+ ✓ Generating static pages (14/14)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    142 B          87.5 kB
+├ ○ /_not-found                          875 B          88.3 kB
+├ ƒ /admin                               103 kB          197 kB
+├ ƒ /admin/export                        0 B                0 B
+├ ƒ /admin/leads                         176 B          94.4 kB
+├ ƒ /admin/leads/[id]                    970 B          95.2 kB
+├ ƒ /api/assessment/draft                0 B                0 B
+├ ƒ /api/assessment/event                0 B                0 B
+├ ƒ /api/assessment/submit               0 B                0 B
+├ ○ /assessment                          1.53 kB        88.9 kB
+├ ○ /assessment/contact                  17.5 kB         105 kB
+├ ○ /assessment/privacy                  142 B          87.5 kB
+├ ƒ /assessment/q/[step]                 3.78 kB          98 kB
+├ ƒ /assessment/result/[token]           1.41 kB        88.8 kB
+├ ƒ /kiosk                               2.07 kB        89.5 kB
+└ ○ /login                               2.25 kB        96.5 kB
++ First Load JS shared by all            87.4 kB
+  ├ chunks/23-21c4c0512853d1ba.js        31.8 kB
+  ├ chunks/fd9d1056-4f68b140661fb637.js  53.6 kB
+  └ other shared chunks (total)          2 kB
+
+
+ƒ Middleware                             83.2 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
