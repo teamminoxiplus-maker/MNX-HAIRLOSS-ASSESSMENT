@@ -57,16 +57,16 @@ export const partialAnswersSchema = answersSchema.partial();
 const phoneRegex = /^(?:\+?63|0)9\d{9}$/;
 
 export const contactSchema = z.object({
-  full_name: z.string().trim().min(2, "Pakilagay ang buong pangalan.").max(120),
-  email: z.string().trim().toLowerCase().email("Hindi wastong email."),
+  full_name: z.string().trim().min(2, "Please enter your full name.").max(120),
+  email: z.string().trim().toLowerCase().email("Invalid email address."),
   phone: z
     .string()
     .trim()
     .refine((v) => phoneRegex.test(v.replace(/[\s-]/g, "")), {
-      message: "Gumamit ng wastong PH mobile number (09XXXXXXXXX).",
+      message: "Please use a valid PH mobile number (09XXXXXXXXX).",
     }),
   consent_privacy: z.literal(true, {
-    errorMap: () => ({ message: "Kailangan ang pahintulot para magpatuloy." }),
+    errorMap: () => ({ message: "Consent is required to continue." }),
   }),
   consent_marketing: z.boolean().optional().default(false),
 });

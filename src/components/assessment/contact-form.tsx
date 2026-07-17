@@ -62,7 +62,7 @@ export function ContactForm() {
       consent_marketing: form.consent_marketing,
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Pakisuri ang mga field.");
+      setError(parsed.error.issues[0]?.message ?? "Please check the fields.");
       return;
     }
 
@@ -94,7 +94,7 @@ export function ContactForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "May mali. Subukan ulit.");
+        setError(data.error ?? "Something went wrong. Please try again.");
         setSubmitting(false);
         return;
       }
@@ -103,7 +103,7 @@ export function ContactForm() {
       if (!kiosk) clearSession();
       router.push(`/assessment/result/${data.token}${q}`);
     } catch {
-      setError("Walang koneksyon. Subukan ulit.");
+      setError("No connection. Please try again.");
       setSubmitting(false);
     }
   };
@@ -115,10 +115,10 @@ export function ContactForm() {
     <form onSubmit={submit} className="space-y-4">
       <div>
         <h2 className="text-lg font-bold text-slate-900">
-          Saan namin ipapadala ang result mo?
+          Where should we send your result?
         </h2>
         <p className="mt-1 text-sm text-slate-500">
-          Isang beses lang ito. Ipapadala namin ang personalized na routine mo.
+          Just this one step. We&apos;ll send your personalized routine.
         </p>
       </div>
 
@@ -136,7 +136,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700">Buong pangalan</label>
+        <label className="text-sm font-medium text-slate-700">Full name</label>
         <input
           className={inputCls}
           value={form.full_name}
@@ -179,11 +179,11 @@ export function ContactForm() {
           onChange={(e) => setForm({ ...form, consent_privacy: e.target.checked })}
         />
         <span>
-          Sumasang-ayon ako sa{" "}
+          I agree to the{" "}
           <a href="/assessment/privacy" className="text-blue-700 underline">
             Privacy Policy
           </a>{" "}
-          at sa pag-process ng aking sagot para sa aking hair assessment.
+          and to the processing of my answers for my hair assessment.
         </span>
       </label>
       <label className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -193,7 +193,7 @@ export function ContactForm() {
           checked={form.consent_marketing}
           onChange={(e) => setForm({ ...form, consent_marketing: e.target.checked })}
         />
-        <span>Gusto kong makatanggap ng tips at promos mula sa MINOXIPLUS.</span>
+        <span>I&apos;d like to receive tips and promos from MINOXIPLUS.</span>
       </label>
 
       {error && <p className="text-sm font-medium text-red-600">{error}</p>}
@@ -204,7 +204,7 @@ export function ContactForm() {
         className="w-full rounded-xl bg-blue-700 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
         style={{ minHeight: 52 }}
       >
-        {submitting ? "Sandali lang…" : "Ipakita ang Result Ko"}
+        {submitting ? "One moment…" : "Show My Result"}
       </button>
     </form>
   );

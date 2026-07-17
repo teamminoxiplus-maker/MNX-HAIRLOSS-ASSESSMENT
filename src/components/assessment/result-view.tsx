@@ -39,7 +39,7 @@ export function ResultView({
           <p className="text-sm text-slate-500">Hi {fullName}!</p>
         )}
         <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400">
-          Based sa sagot mo:
+          Based on your answers:
         </p>
         <h1 className="mt-1 text-2xl font-extrabold leading-tight text-slate-900">
           {cc.label}
@@ -73,7 +73,7 @@ export function ResultView({
 
       {/* 3. What's happening */}
       <section>
-        <h2 className="text-sm font-bold text-slate-900">Ano ang nangyayari</h2>
+        <h2 className="text-sm font-bold text-slate-900">What&apos;s happening</h2>
         <p className="mt-1 text-sm leading-relaxed text-slate-700">
           {cc.whatsHappening}
         </p>
@@ -107,7 +107,7 @@ export function ResultView({
           {/* 4. Routine */}
           <section>
             <h2 className="text-sm font-bold text-slate-900">
-              {cc.routineIntro || "Ang routine mo"}
+              {cc.routineIntro || "Your routine"}
             </h2>
             <div className="mt-3 space-y-3">
               {products.map((id) => {
@@ -125,7 +125,7 @@ export function ResultView({
                     </div>
                     <p className="mt-1.5 text-sm text-slate-700">{p.why}</p>
                     <p className="mt-1 text-xs text-slate-500">
-                      Paano gamitin: {p.howToUse}
+                      How to use: {p.howToUse}
                     </p>
                   </div>
                 );
@@ -135,7 +135,7 @@ export function ResultView({
 
           {/* 5. Timeline */}
           <section>
-            <h2 className="text-sm font-bold text-slate-900">Ano ang aasahan</h2>
+            <h2 className="text-sm font-bold text-slate-900">What to expect</h2>
             <ol className="mt-3 space-y-3">
               {TIMELINE.map((t) => (
                 <li key={t.when} className="flex gap-3">
@@ -150,7 +150,7 @@ export function ResultView({
 
           {/* 6. Where to buy */}
           <section>
-            <h2 className="text-sm font-bold text-slate-900">Saan bibili</h2>
+            <h2 className="text-sm font-bold text-slate-900">Where to buy</h2>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <a
                 href={STOREFRONTS.website}
@@ -184,7 +184,7 @@ export function ResultView({
       {/* 7. Consult CTA (also on product results) */}
       {!referral && (
         <section className="rounded-xl bg-slate-100 p-4 text-center">
-          <p className="text-sm text-slate-700">May tanong? Message mo lang kami.</p>
+          <p className="text-sm text-slate-700">Have a question? Just message us.</p>
           <div className="mt-3 flex justify-center gap-2">
             <a
               href={CONSULT.facebook}

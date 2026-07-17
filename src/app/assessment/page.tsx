@@ -5,9 +5,9 @@ import { DISCLAIMER, REVIEWED_BY } from "@/lib/assessment/copy";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Libreng Hair Loss Assessment — MINOXIPLUS",
+  title: "Free Hair Loss Assessment — MINOXIPLUS",
   description:
-    "90 seconds lang. Sagutin mo at malalaman mo kung anong hair problem meron ka — at kung anong tamang routine para sa'yo.",
+    "Takes 90 seconds. Answer a few questions to find out what kind of hair concern you have — and the right routine for you.",
 };
 
 // Screen 0 — Landing (spec §7). QR codes land here. Must never 404 and must
@@ -20,11 +20,11 @@ export default function AssessmentLanding() {
           Free Hair Loss Assessment
         </p>
         <h1 className="mt-3 text-2xl font-extrabold leading-tight text-slate-900">
-          Libreng Hair Loss Assessment
+          Free Hair Loss Assessment
         </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
-          90 seconds lang. Sagutin mo, at malalaman mo kung anong hair problem
-          meron ka — at kung anong tamang routine para sa&apos;yo.
+          Takes 90 seconds. Answer a few questions and find out what kind of
+          hair concern you have — and the right routine for you.
         </p>
 
         <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-800">
@@ -36,15 +36,15 @@ export default function AssessmentLanding() {
         </Suspense>
 
         <p className="mt-4 text-xs leading-relaxed text-slate-400">
-          Hindi ito medical diagnosis. Guide lang ito para sa tamang routine.
+          This is not a medical diagnosis. It&apos;s a guide to the right routine.
         </p>
       </div>
 
       <ul className="mt-8 space-y-2 text-sm text-slate-600">
         {[
-          "12 mabilis na tanong, isa-isa lang",
-          "Walang download, walang login",
-          "Personalized na routine sa dulo",
+          "12 quick questions, one at a time",
+          "No download, no login",
+          "A personalized routine at the end",
         ].map((t) => (
           <li key={t} className="flex items-start gap-2">
             <span className="mt-0.5 text-blue-700" aria-hidden>

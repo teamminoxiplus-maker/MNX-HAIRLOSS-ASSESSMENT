@@ -3,11 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "MINOXIPLUS — Libreng Hair Loss Assessment",
+    default: "MINOXIPLUS — Free Hair Loss Assessment",
     template: "%s · MINOXIPLUS",
   },
   description:
-    "Libreng hair loss assessment ng MINOXIPLUS. 90 seconds lang — malalaman mo ang tamang routine para sa'yo.",
+    "MINOXIPLUS free hair loss assessment. Takes 90 seconds — find out the right routine for you.",
   applicationName: "MINOXIPLUS Assessment",
 };
 

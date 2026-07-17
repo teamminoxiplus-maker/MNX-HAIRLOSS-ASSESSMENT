@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { clearSession } from "@/lib/assessment/session";
 
 // Kiosk auto-reset (spec §13): 15s after the result shows, wipe state and
-// return to the kiosk landing. A "Salamat!" overlay with a manual Done button.
+// return to the kiosk landing. A "Thank you!" overlay with a manual Done button.
 export function KioskReset() {
   const router = useRouter();
   const kiosk = useSearchParams().get("kiosk") === "1";
@@ -30,9 +30,9 @@ export function KioskReset() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white p-4 shadow-lg">
       <div className="mx-auto flex max-w-md items-center justify-between gap-3">
         <div>
-          <p className="font-bold text-slate-900">Salamat!</p>
+          <p className="font-bold text-slate-900">Thank you!</p>
           <p className="text-xs text-slate-500">
-            Magre-reset sa {count}s para sa susunod na customer.
+            Resetting in {count}s for the next customer.
           </p>
         </div>
         <button

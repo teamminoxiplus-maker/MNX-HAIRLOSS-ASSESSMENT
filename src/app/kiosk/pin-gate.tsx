@@ -39,7 +39,7 @@ export function PinGate() {
         <input
           name="loc"
           type="text"
-          placeholder="hal. sm_north"
+          placeholder="e.g. sm_north"
           className="mt-1 w-full rounded-lg border-2 border-slate-200 px-3.5 py-3 outline-none focus:border-blue-700"
         />
       </div>

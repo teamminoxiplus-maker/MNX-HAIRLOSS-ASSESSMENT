@@ -7,7 +7,7 @@ export interface ProductInfo {
   id: ProductId;
   name: string;
   actives: string;
-  // One-line "bakit ito para sa'yo" shown on the result card.
+  // One-line "why this is for you" shown on the result card.
   why: string;
   howToUse: string;
   // --- safety attributes read by applySafetyGates (spec §9.4) ---
@@ -26,8 +26,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "signature_hair_grower",
     name: "Signature Hair Grower",
     actives: "5% Minoxidil topical spray",
-    why: "Sinusuportahan ang regrowth ng buhok sa hairline at crown.",
-    howToUse: "1 ml spray, 2x kada araw sa tuyong anit. Huwag hugasan ng 4 na oras.",
+    why: "Supports hair regrowth at the hairline and crown.",
+    howToUse: "1 ml spray, twice a day on a dry scalp. Do not wash for 4 hours.",
     containsMinoxidil: true,
     containsFinasteride: false,
     menOnly: false,
@@ -40,8 +40,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "tri_active",
     name: "Tri Active",
     actives: "Minoxidil + Finasteride + Bakuchiol",
-    why: "Triple-action para sa moderate hanggang advanced na pattern hair loss ng lalaki.",
-    howToUse: "Sundin ang direksyon sa label. Kumonsulta muna kay Doc bago simulan.",
+    why: "Triple-action for moderate to advanced male pattern hair loss.",
+    howToUse: "Follow the label directions. Consult the doctor before starting.",
     containsMinoxidil: true,
     containsFinasteride: true,
     menOnly: true, // spec §9.4.1 — MEN ONLY, hard filter
@@ -54,8 +54,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "keto_shampoo",
     name: "Ketoconazole 2% Shampoo",
     actives: "Ketoconazole 2%",
-    why: "Tinutugunan ang balakubak at kati na nagpapalagas ng buhok.",
-    howToUse: "2–3x kada linggo. Iwanan 3–5 minuto bago banlawan.",
+    why: "Targets the dandruff and itch that trigger shedding.",
+    howToUse: "2–3x a week. Leave on for 3–5 minutes before rinsing.",
     containsMinoxidil: false,
     containsFinasteride: false,
     menOnly: false,
@@ -68,8 +68,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "hair_supplement",
     name: "Hair Supplement Capsules",
     actives: "Hair-support vitamins",
-    why: "Sinusuportahan ang lakas at kapal ng buhok mula sa loob.",
-    howToUse: "1 capsule kada araw kasabay ng pagkain.",
+    why: "Supports hair strength and thickness from within.",
+    howToUse: "1 capsule a day with food.",
     containsMinoxidil: false,
     containsFinasteride: false,
     menOnly: false,
@@ -82,8 +82,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "scalp_massager",
     name: "Scalp Massager",
     actives: "Device",
-    why: "Nagpapaganda ng blood flow sa anit para mas epektibo ang topicals.",
-    howToUse: "3–5 minuto kada araw, marahang pagmasahe sa anit.",
+    why: "Improves blood flow to the scalp so topicals work better.",
+    howToUse: "3–5 minutes a day, gently massaging the scalp.",
     containsMinoxidil: false,
     containsFinasteride: false,
     menOnly: false,
@@ -96,8 +96,8 @@ export const PRODUCTS: Record<ProductId, ProductInfo> = {
     id: "derma_stamp",
     name: "Derma Stamp",
     actives: "Device",
-    why: "Micro-needling na tumutulong sa absorption ng topical treatment.",
-    howToUse: "1x kada linggo. Linisin bago at pagkatapos gamitin.",
+    why: "Micro-needling that helps the absorption of topical treatment.",
+    howToUse: "Once a week. Clean before and after use.",
     containsMinoxidil: false,
     containsFinasteride: false,
     menOnly: false,

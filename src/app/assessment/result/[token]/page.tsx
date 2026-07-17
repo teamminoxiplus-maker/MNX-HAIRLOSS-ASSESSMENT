@@ -8,7 +8,7 @@ import { assessmentDb } from "@/lib/assessment/persist";
 import type { Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
 
 export const metadata: Metadata = {
-  title: "Ang Result Mo — MINOXIPLUS",
+  title: "Your Result — MINOXIPLUS",
   robots: { index: false }, // unguessable token, but keep result pages out of search
 };
 

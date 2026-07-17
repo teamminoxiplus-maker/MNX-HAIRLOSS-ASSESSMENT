@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const rl = await rateLimit(`submit:${ip ?? "anon"}`, 5, 3600);
   if (!rl.allowed) {
     return NextResponse.json(
-      { error: "Sobra na ang subok. Subukan ulit mamaya." },
+      { error: "Too many attempts. Please try again later." },
       { status: 429 },
     );
   }
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   const parsed = submitSchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Kulang o mali ang ilang sagot.", issues: parsed.error.flatten() },
+      { error: "Some answers are missing or invalid.", issues: parsed.error.flatten() },
       { status: 400 },
     );
   }
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   const phone = normalizePhone(d.contact.phone);
   if (!phone) {
     return NextResponse.json(
-      { error: "Hindi wastong PH mobile number." },
+      { error: "Invalid PH mobile number." },
       { status: 400 },
     );
   }
@@ -87,13 +87,13 @@ export async function POST(req: Request) {
 
     if (error) {
       return NextResponse.json(
-        { error: "Hindi na-save ang result. Subukan ulit." },
+        { error: "Could not save the result. Please try again." },
         { status: 500 },
       );
     }
   } catch {
     return NextResponse.json(
-      { error: "Hindi na-save ang result. Subukan ulit." },
+      { error: "Could not save the result. Please try again." },
       { status: 500 },
     );
   }

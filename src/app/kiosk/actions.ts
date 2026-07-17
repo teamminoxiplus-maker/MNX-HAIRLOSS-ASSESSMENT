@@ -17,7 +17,7 @@ export async function unlockKiosk(
     return { error: "Kiosk PIN not configured." };
   }
   if (pin !== expected) {
-    return { error: "Maling PIN." };
+    return { error: "Wrong PIN." };
   }
 
   cookies().set("kiosk_unlocked", "1", {

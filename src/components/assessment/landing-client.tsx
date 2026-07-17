@@ -47,7 +47,7 @@ export function LandingClient({ kiosk = false }: { kiosk?: boolean }) {
       className="mt-6 w-full rounded-xl bg-blue-700 px-6 py-4 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-800 disabled:opacity-60"
       style={{ minHeight: 52 }}
     >
-      Simulan ang Assessment
+      Start the Assessment
     </button>
   );
 }

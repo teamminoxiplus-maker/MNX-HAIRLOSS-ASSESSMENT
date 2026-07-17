@@ -14,42 +14,41 @@ export default function PrivacyPage() {
       <article className="space-y-4 text-sm leading-relaxed text-slate-700">
         <h1 className="text-xl font-extrabold text-slate-900">Privacy Notice</h1>
         <p>
-          Ang MINOXIPLUS (Happy Life Organics Philippines) ang nangongolekta ng
-          iyong impormasyon sa libreng hair loss assessment na ito, alinsunod sa
-          Republic Act 10173 (Data Privacy Act of 2012).
+          MINOXIPLUS (Happy Life Organics Philippines) collects your information
+          through this free hair loss assessment in accordance with Republic Act
+          10173 (Data Privacy Act of 2012).
         </p>
 
         <h2 className="pt-2 text-base font-bold text-slate-900">
-          Anong kino-kolekta namin
+          What we collect
         </h2>
         <p>
-          Pangalan, email, mobile number, mga sagot mo sa assessment, at basic na
-          technical info (device type, source ng pag-scan). Hindi namin
-          iniimbak ang iyong buong IP address — naka-hash lamang ito.
+          Your name, email, mobile number, your assessment answers, and basic
+          technical info (device type, scan source). We do not store your full IP
+          address — it is hashed only.
         </p>
 
         <h2 className="pt-2 text-base font-bold text-slate-900">
-          Bakit namin ito ginagamit
+          Why we use it
         </h2>
         <p>
-          Para ibigay ang iyong personalized na routine, ipadala ang iyong
-          result, at (kung pumayag ka) magpadala ng tips at promos. Hindi namin
-          ibinebenta ang iyong data sa iba.
+          To provide your personalized routine, send your result, and (if you
+          agree) send tips and promos. We do not sell your data to anyone.
         </p>
 
         <h2 className="pt-2 text-base font-bold text-slate-900">Retention</h2>
         <p>
-          Itinatago namin ang iyong assessment habang aktibo ang iyong relasyon
-          sa amin. Ang mga hindi kumpletong entry na walang contact info ay
-          awtomatikong binubura pagkalipas ng 90 araw.
+          We keep your assessment for as long as your relationship with us is
+          active. Incomplete entries with no contact info are automatically
+          deleted after 90 days.
         </p>
 
         <h2 className="pt-2 text-base font-bold text-slate-900">
-          Ang iyong mga karapatan
+          Your rights
         </h2>
         <p>
-          May karapatan kang tingnan, iwasto, o ipabura ang iyong data. Para
-          humiling ng deletion o may tanong tungkol sa privacy, mag-email sa{" "}
+          You have the right to access, correct, or request deletion of your
+          data. To request deletion or ask a privacy question, email{" "}
           <a href={`mailto:${CONSULT.email}`} className="text-blue-700 underline">
             {CONSULT.email}
           </a>
@@ -57,7 +56,7 @@ export default function PrivacyPage() {
         </p>
 
         <p className="pt-2 text-xs text-slate-400">
-          Hindi ito medical diagnosis. Guide lang ito para sa tamang routine.
+          This is not a medical diagnosis. It&apos;s a guide to the right routine.
         </p>
       </article>
     </MinoxShell>

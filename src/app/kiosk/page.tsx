@@ -23,7 +23,7 @@ export default function KioskPage() {
         <div className="pt-6">
           <h1 className="text-xl font-extrabold text-slate-900">Kiosk Mode</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Ilagay ang PIN para simulan ang kiosk session.
+            Enter the PIN to start the kiosk session.
           </p>
           <div className="mt-6">
             <PinGate />
@@ -37,10 +37,10 @@ export default function KioskPage() {
     <MinoxShell>
       <div className="pt-8 text-center">
         <h1 className="text-2xl font-extrabold leading-tight text-slate-900">
-          Libreng Hair Loss Assessment
+          Free Hair Loss Assessment
         </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
-          90 seconds lang. I-tap ang start at sagutin ang 12 tanong.
+          Takes 90 seconds. Tap start and answer 12 questions.
         </p>
         <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-800">
           <span aria-hidden>✔</span> {REVIEWED_BY}
@@ -49,7 +49,7 @@ export default function KioskPage() {
           <LandingClient kiosk />
         </Suspense>
         <p className="mt-4 text-xs text-slate-400">
-          Hindi ito medical diagnosis. Guide lang ito para sa tamang routine.
+          This is not a medical diagnosis. It&apos;s a guide to the right routine.
         </p>
       </div>
     </MinoxShell>

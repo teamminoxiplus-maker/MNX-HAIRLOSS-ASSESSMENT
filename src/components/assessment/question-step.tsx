@@ -127,7 +127,7 @@ export function QuestionStep({ step }: { step: number }) {
       </h2>
       {q.type === "multi" && (
         <p className="mb-4 text-xs text-slate-500">
-          Pwedeng higit sa isa ang piliin.
+          You can choose more than one.
         </p>
       )}
 
@@ -178,7 +178,7 @@ export function QuestionStep({ step }: { step: number }) {
           className="mt-6 w-full rounded-xl bg-blue-700 px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
           style={{ minHeight: 52 }}
         >
-          {step >= TOTAL_STEPS ? "Susunod" : "Susunod"}
+          Next
         </button>
       )}
     </div>
