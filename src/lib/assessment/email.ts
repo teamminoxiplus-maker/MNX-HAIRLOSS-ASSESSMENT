@@ -3,6 +3,8 @@
 // No SDK dependency — a single fetch to Resend. No-ops cleanly if unconfigured.
 import { CONCERN_COPY, DISCLAIMER, FLAG_COPY, REVIEWED_BY, SEVERITY_COPY, TIMELINE, CONSULT_COPY } from "./copy";
 import { PRODUCTS, STOREFRONTS, CONSULT } from "./products";
+import { BUNDLES, recommendBundle } from "./bundles";
+import { formatPHP } from "@/lib/utils";
 import type { EngineResult } from "./types";
 
 interface EmailArgs {
@@ -49,6 +51,27 @@ function buildHtml({ fullName, result, token }: EmailArgs): string {
         })
         .join("");
 
+  const bundleId = recommendBundle(
+    result.concern,
+    result.severity,
+    result.recommended_products,
+    result.referral_required,
+  );
+  const bundle = bundleId ? BUNDLES[bundleId] : null;
+  const bundleHtml = bundle
+    ? `<div style="background:#0b1f4d;border-radius:12px;padding:18px;margin:16px 0;color:#fff">
+         <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#93c5fd">Recommended for you · Save with the system</div>
+         <div style="font-size:18px;font-weight:800;margin-top:4px">${esc(bundle.name)}</div>
+         <div style="font-size:13px;color:#dbeafe">${esc(bundle.system)}</div>
+         <ul style="margin:12px 0;padding-left:18px;font-size:13px;color:#eff6ff">
+           ${bundle.items.map((it) => `<li style="margin:3px 0">${esc(it)}</li>`).join("")}
+         </ul>
+         <div style="font-size:13px;color:#93c5fd;text-decoration:line-through">${esc(formatPHP(bundle.srp))}</div>
+         <div style="font-size:22px;font-weight:800">${esc(formatPHP(bundle.promo))} <span style="font-size:12px;font-weight:600;color:#bfdbfe">· Only ₱${bundle.perDay}/day</span></div>
+         <a href="${CONSULT.messenger}" style="display:inline-block;background:#fff;color:#0b1f4d;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:12px">Order this system</a>
+       </div>`
+    : "";
+
   const timeline = isRefer
     ? ""
     : `<h3 style="margin:20px 0 6px">What to expect</h3>` +
@@ -86,6 +109,7 @@ function buildHtml({ fullName, result, token }: EmailArgs): string {
         <p style="font-size:12px;color:#64748b">${esc(REVIEWED_BY)}</p>
         ${flagLines}
         ${routine}
+        ${bundleHtml}
         ${timeline}
         ${buy}
         <p style="margin:20px 0 0"><a href="${resultUrl}" style="color:#1e3a8a">Open your full result →</a></p>

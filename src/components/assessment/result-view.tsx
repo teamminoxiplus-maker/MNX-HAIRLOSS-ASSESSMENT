@@ -8,6 +8,8 @@ import {
   TIMELINE,
 } from "@/lib/assessment/copy";
 import { CONSULT, PRODUCTS, STOREFRONTS } from "@/lib/assessment/products";
+import { BUNDLES, recommendBundle } from "@/lib/assessment/bundles";
+import { formatPHP } from "@/lib/utils";
 import type { Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
 
 // Renders the result from the stored derived fields (spec §10). Same copy.ts
@@ -30,6 +32,8 @@ export function ResultView({
   const cc = CONCERN_COPY[concern];
   const sev = SEVERITY_COPY[severity];
   const flagLines = flags.map((f) => FLAG_COPY[f]).filter(Boolean) as string[];
+  const bundleId = recommendBundle(concern, severity, products, referral);
+  const bundle = bundleId ? BUNDLES[bundleId] : null;
 
   return (
     <div className="space-y-6">
@@ -146,6 +150,72 @@ export function ResultView({
               })}
             </div>
           </section>
+
+          {/* 4b. Complete-system bundle (safety-gated recommendation) */}
+          {bundle && (
+            <section
+              className="overflow-hidden rounded-2xl text-white"
+              style={{ backgroundColor: "#0b1f4d" }}
+            >
+              <div className="p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-200">
+                  Recommended for you · Save with the system
+                </p>
+                <h2 className="mt-1 text-xl font-extrabold">{bundle.name}</h2>
+                <p className="text-sm font-medium text-blue-100">{bundle.system}</p>
+                <p className="mt-2 text-sm leading-relaxed text-blue-50/90">
+                  {bundle.tagline}
+                </p>
+
+                <ul className="mt-4 space-y-1.5 border-t border-white/15 pt-4 text-sm">
+                  {bundle.items.map((it) => (
+                    <li key={it} className="flex gap-2">
+                      <span className="text-blue-300" aria-hidden>
+                        ✓
+                      </span>
+                      <span>{it}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-4 flex items-end gap-3 border-t border-white/15 pt-4">
+                  <div>
+                    <span className="text-sm text-blue-200 line-through">
+                      {formatPHP(bundle.srp)}
+                    </span>
+                    <div className="text-2xl font-extrabold">
+                      {formatPHP(bundle.promo)}
+                    </div>
+                  </div>
+                  <span className="mb-1 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-semibold">
+                    Only ₱{bundle.perDay}/day
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-blue-200/80">{bundle.clinicNote}</p>
+
+                <a
+                  href={CONSULT.messenger}
+                  className="mt-4 block rounded-xl bg-white px-4 py-3 text-center font-bold text-blue-900"
+                >
+                  Order this system
+                </a>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <a
+                    href={CONSULT.viber}
+                    className="rounded-lg border border-white/25 px-3 py-2 text-center text-sm font-semibold"
+                  >
+                    Viber
+                  </a>
+                  <a
+                    href={`tel:${CONSULT.phoneIntl}`}
+                    className="rounded-lg border border-white/25 px-3 py-2 text-center text-sm font-semibold"
+                  >
+                    Call {CONSULT.phone}
+                  </a>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* 5. Timeline */}
           <section>
