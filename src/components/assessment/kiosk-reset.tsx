@@ -40,7 +40,7 @@ export function KioskReset() {
             clearSession();
             router.push("/kiosk");
           }}
-          className="rounded-lg bg-blue-700 px-5 py-2.5 font-semibold text-white"
+          className="rounded-lg bg-emerald-500 px-5 py-2.5 font-semibold text-slate-950"
         >
           Done
         </button>

@@ -21,8 +21,8 @@ export default function KioskPage() {
     return (
       <MinoxShell>
         <div className="pt-6">
-          <h1 className="text-xl font-extrabold text-slate-900">Kiosk Mode</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-xl font-extrabold text-white">Kiosk Mode</h1>
+          <p className="mt-1 text-sm text-slate-400">
             Enter the PIN to start the kiosk session.
           </p>
           <div className="mt-6">
@@ -36,13 +36,13 @@ export default function KioskPage() {
   return (
     <MinoxShell>
       <div className="pt-8 text-center">
-        <h1 className="text-2xl font-extrabold leading-tight text-slate-900">
+        <h1 className="text-2xl font-extrabold leading-tight text-white">
           Free Hair Loss Assessment
         </h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
+        <p className="mt-3 text-[15px] leading-relaxed text-slate-300">
           Takes 90 seconds. Tap start and answer 12 questions.
         </p>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-800">
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
           <span aria-hidden>✔</span> {REVIEWED_BY}
         </div>
         <Suspense>

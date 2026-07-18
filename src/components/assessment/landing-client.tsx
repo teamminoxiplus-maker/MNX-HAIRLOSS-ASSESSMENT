@@ -44,10 +44,10 @@ export function LandingClient({ kiosk = false }: { kiosk?: boolean }) {
     <button
       onClick={start}
       disabled={!ready}
-      className="mt-6 w-full rounded-xl bg-blue-700 px-6 py-4 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-800 disabled:opacity-60"
-      style={{ minHeight: 52 }}
+      className="mt-6 w-full rounded-2xl bg-emerald-500 px-6 py-4 text-center text-base font-bold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400 disabled:opacity-60"
+      style={{ minHeight: 54 }}
     >
-      Start the Assessment
+      Start My Free Assessment →
     </button>
   );
 }

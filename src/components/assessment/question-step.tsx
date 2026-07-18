@@ -106,27 +106,27 @@ export function QuestionStep({ step }: { step: number }) {
       <div className="mb-4 flex items-center gap-3">
         <button
           onClick={goBack}
-          className="shrink-0 rounded-md px-2 py-1 text-sm text-slate-500 hover:text-slate-900"
-          aria-label="Bumalik"
+          className="shrink-0 rounded-md px-2 py-1 text-sm text-slate-400 hover:text-white"
+          aria-label="Back"
         >
           ← Back
         </button>
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
           <div
-            className="h-full rounded-full bg-blue-700 transition-all"
+            className="h-full rounded-full bg-emerald-500 transition-all"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="shrink-0 text-xs font-medium tabular-nums text-slate-500">
+        <span className="shrink-0 text-xs font-medium tabular-nums text-slate-400">
           {step}/{TOTAL_STEPS}
         </span>
       </div>
 
-      <h2 className="mb-1 text-lg font-bold leading-snug text-slate-900">
+      <h2 className="mb-1 font-serif text-2xl font-medium leading-snug text-white">
         {q.title}
       </h2>
       {q.type === "multi" && (
-        <p className="mb-4 text-xs text-slate-500">
+        <p className="mb-4 text-xs text-slate-400">
           You can choose more than one.
         </p>
       )}
@@ -142,17 +142,17 @@ export function QuestionStep({ step }: { step: number }) {
               }
               aria-pressed={isSel}
               className={cn(
-                "flex w-full items-center justify-between rounded-xl border-2 px-4 py-3.5 text-left text-[15px] transition-colors",
+                "flex w-full items-center justify-between rounded-2xl border px-4 py-3.5 text-left text-[15px] transition-colors",
                 isSel
-                  ? "border-blue-700 bg-blue-50 text-blue-900"
-                  : "border-slate-200 bg-white text-slate-800 hover:border-slate-300",
+                  ? "border-emerald-400 bg-emerald-500/10 text-emerald-50"
+                  : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/25",
               )}
-              style={{ minHeight: 52 }}
+              style={{ minHeight: 54 }}
             >
               <span>
                 <span className="font-medium">{opt.label}</span>
                 {opt.hint && (
-                  <span className="mt-0.5 block text-xs text-slate-500">
+                  <span className="mt-0.5 block text-xs text-slate-400">
                     {opt.hint}
                   </span>
                 )}
@@ -160,7 +160,9 @@ export function QuestionStep({ step }: { step: number }) {
               <span
                 className={cn(
                   "ml-3 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 text-xs",
-                  isSel ? "border-blue-700 bg-blue-700 text-white" : "border-slate-300",
+                  isSel
+                    ? "border-emerald-400 bg-emerald-500 text-slate-950"
+                    : "border-white/25",
                 )}
                 aria-hidden
               >
@@ -175,10 +177,10 @@ export function QuestionStep({ step }: { step: number }) {
         <button
           onClick={goNext}
           disabled={!canProceed}
-          className="mt-6 w-full rounded-xl bg-blue-700 px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
-          style={{ minHeight: 52 }}
+          className="mt-6 w-full rounded-2xl bg-emerald-500 px-6 py-3.5 text-base font-bold text-slate-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
+          style={{ minHeight: 54 }}
         >
-          Next
+          Next →
         </button>
       )}
     </div>

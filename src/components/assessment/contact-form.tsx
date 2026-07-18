@@ -109,15 +109,15 @@ export function ContactForm() {
   };
 
   const inputCls =
-    "mt-1 w-full rounded-lg border-2 border-slate-200 px-3.5 py-3 text-[15px] outline-none focus:border-blue-700";
+    "mt-1 w-full rounded-xl border border-white/15 bg-white/[0.04] px-3.5 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none focus:border-emerald-400";
 
   return (
     <form onSubmit={submit} className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-slate-900">
+        <h2 className="font-serif text-2xl font-medium text-white">
           Where should we send your result?
         </h2>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-sm text-slate-400">
           Just this one step. We&apos;ll send your personalized routine.
         </p>
       </div>
@@ -136,7 +136,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700">Full name</label>
+        <label className="text-sm font-medium text-slate-300">Full name</label>
         <input
           className={inputCls}
           value={form.full_name}
@@ -146,7 +146,7 @@ export function ContactForm() {
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-slate-700">Email</label>
+        <label className="text-sm font-medium text-slate-300">Email</label>
         <input
           type="email"
           inputMode="email"
@@ -158,7 +158,7 @@ export function ContactForm() {
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-slate-700">Mobile number</label>
+        <label className="text-sm font-medium text-slate-300">Mobile number</label>
         <input
           type="tel"
           inputMode="tel"
@@ -171,7 +171,7 @@ export function ContactForm() {
         />
       </div>
 
-      <label className="flex items-start gap-2.5 text-sm text-slate-700">
+      <label className="flex items-start gap-2.5 text-sm text-slate-300">
         <input
           type="checkbox"
           className="mt-0.5 h-5 w-5"
@@ -180,13 +180,13 @@ export function ContactForm() {
         />
         <span>
           I agree to the{" "}
-          <a href="/assessment/privacy" className="text-blue-700 underline">
+          <a href="/assessment/privacy" className="text-emerald-400 underline">
             Privacy Policy
           </a>{" "}
           and to the processing of my answers for my hair assessment.
         </span>
       </label>
-      <label className="flex items-start gap-2.5 text-sm text-slate-700">
+      <label className="flex items-start gap-2.5 text-sm text-slate-300">
         <input
           type="checkbox"
           className="mt-0.5 h-5 w-5"
@@ -196,12 +196,12 @@ export function ContactForm() {
         <span>I&apos;d like to receive tips and promos from MINOXIPLUS.</span>
       </label>
 
-      {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+      {error && <p className="text-sm font-medium text-red-400">{error}</p>}
 
       <button
         type="submit"
         disabled={submitting || !answers}
-        className="w-full rounded-xl bg-blue-700 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-blue-800 disabled:opacity-50"
+        className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-bold text-slate-950 transition-colors hover:bg-emerald-400 disabled:opacity-50"
         style={{ minHeight: 52 }}
       >
         {submitting ? "One moment…" : "Show My Result"}
