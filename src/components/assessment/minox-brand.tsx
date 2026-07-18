@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 // MINOXIPLUS visual identity — dark premium "clinical" look (matches the brand's
@@ -10,19 +13,20 @@ export const MINOX = {
   gold: "#f5c451",
 };
 
-// Silver-script wordmark. Approximates the metallic Minoxiplus logo; to use the
-// exact brand PNG, drop a transparent file at public/minoxiplus-logo.png and set
-// USE_LOGO_IMAGE = true.
-const USE_LOGO_IMAGE = false;
-
+// Uses the brand PNG at /minoxiplus-logo.png when present, and falls back to a
+// silver-script wordmark if the file is missing — so the header never breaks.
+// To use the real logo: upload a transparent PNG to public/minoxiplus-logo.png.
 export function MinoxLogo({ className }: { className?: string }) {
-  if (USE_LOGO_IMAGE) {
+  const [imgFailed, setImgFailed] = useState(false);
+
+  if (!imgFailed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src="/minoxiplus-logo.png"
         alt="Minoxiplus"
-        className={cn("h-10 w-auto", className)}
+        className={cn("h-11 w-auto", className)}
+        onError={() => setImgFailed(true)}
       />
     );
   }
