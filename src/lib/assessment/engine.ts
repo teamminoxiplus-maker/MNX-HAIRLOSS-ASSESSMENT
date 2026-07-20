@@ -142,7 +142,13 @@ export function mapProducts(
     case "TRACTION":
       return ["signature_hair_grower", "scalp_massager"];
     case "MIXED":
-      return ["keto_shampoo", "signature_hair_grower"];
+      // Pattern loss + scalp irritation. Moderate/advanced men get the stronger
+      // TriActive system — its Ketoconazole shampoo still treats the scalp — so
+      // a severe case with dandruff isn't capped at the Starter tier. Women and
+      // early cases keep the Signature + shampoo routine (safety-gated after).
+      return advanced && a.sex === "male"
+        ? ["tri_active", "keto_shampoo", "hair_supplement"]
+        : ["keto_shampoo", "signature_hair_grower", "hair_supplement"];
     case "REFER_PATCHY":
     case "REFER_SCALP":
     case "INCONCLUSIVE":

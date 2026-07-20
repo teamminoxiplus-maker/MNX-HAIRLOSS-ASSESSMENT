@@ -169,10 +169,16 @@ export function recommendBundle(
     return severity === "Advanced" ? "PRO" : "ADVANCED";
   }
 
-  // Signature-based system for pattern-loss concerns (incl. all female AGA,
-  // early male AGA, and mixed). Only where a minoxidil routine survived gates.
+  // Signature-based Starter system for any hair-loss concern where a Minoxidil
+  // routine survived the safety gates (all female AGA, early male AGA, mixed,
+  // traction, and scalp-driven shedding that also thins). Referral/consult
+  // routes and pure telogen effluvium (temporary shedding) return no bundle.
   const patternLoss =
-    concern === "AGA_MALE" || concern === "AGA_FEMALE" || concern === "MIXED";
+    concern === "AGA_MALE" ||
+    concern === "AGA_FEMALE" ||
+    concern === "MIXED" ||
+    concern === "TRACTION" ||
+    concern === "SEB_DERM";
   if (patternLoss && products.includes("signature_hair_grower")) {
     return "STARTER";
   }

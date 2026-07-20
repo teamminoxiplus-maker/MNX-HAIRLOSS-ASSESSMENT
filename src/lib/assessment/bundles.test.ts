@@ -85,4 +85,26 @@ describe("recommendBundle — safety-gated", () => {
     expect(b).not.toBe("PRO");
     expect(b).not.toBe("ADVANCED");
   });
+
+  it("severe man WITH a scalp issue (MIXED) still reaches ADVANCED/PRO", () => {
+    // Previously capped at STARTER — a dandruffy scalp shouldn't downgrade the tier.
+    expect(
+      bundleFor(
+        base({ sex: "male", pattern: "crown", scalp: ["dandruff"], duration: "gt_3y", shedding: "clumps", family_history: "yes" }),
+      ),
+    ).toBe("PRO");
+    expect(
+      bundleFor(
+        base({ sex: "male", pattern: "receding", scalp: ["oily"], duration: "1_3y", shedding: "noticeable" }),
+      ),
+    ).toBe("ADVANCED");
+  });
+
+  it("woman with a scalp issue (MIXED) stays STARTER (men-only rule)", () => {
+    expect(
+      bundleFor(
+        base({ sex: "female", pattern: "widening_part", scalp: ["dandruff"], duration: "gt_3y", shedding: "clumps", family_history: "yes" }),
+      ),
+    ).toBe("STARTER");
+  });
 });
