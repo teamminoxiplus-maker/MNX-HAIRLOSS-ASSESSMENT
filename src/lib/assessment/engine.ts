@@ -12,8 +12,6 @@ import type {
   Severity,
 } from "./types";
 
-const AGA_MALE_PATTERNS = new Set(["receding", "crown"]);
-const AGA_FEMALE_PATTERNS = new Set(["widening_part", "crown"]);
 const AGA_PATTERNS = new Set(["receding", "crown", "widening_part"]);
 const SCALP_IRRITATION = new Set(["dandruff", "itchy", "oily"]);
 const TE_TRIGGERS = new Set([
@@ -41,12 +39,7 @@ export function classify(a: Answers): Concern {
   // 2. Open scalp wound / skin condition → treat scalp first, refer.
   if (a.medical_flags.includes("scalp_wound")) return "REFER_SCALP";
 
-  // 3. Traction — edge loss from tight styling.
-  if (a.pattern === "edges" && (a.styling === "daily" || a.styling === "sometimes")) {
-    return "TRACTION";
-  }
-
-  // 4. Telogen effluvium — diffuse shed after a recent trigger, ≤12 months.
+  // 3. Telogen effluvium — diffuse shed after a recent trigger, ≤12 months.
   if (
     a.pattern === "diffuse" &&
     hasAny(a.triggers, TE_TRIGGERS) &&
@@ -60,17 +53,20 @@ export function classify(a: Answers): Concern {
   // MIXED — an AGA pattern together with scalp irritation → treat both.
   if (AGA_PATTERNS.has(a.pattern) && scalpFlags) return "MIXED";
 
-  // 5. Seborrheic dermatitis — irritation-driven shed, non-AGA pattern.
+  // 4. Seborrheic dermatitis — irritation-driven shed, non-AGA pattern.
   if (scalpFlags && a.pattern === "diffuse") return "SEB_DERM";
 
-  // 6. Male pattern (androgenetic).
-  if (a.sex === "male" && AGA_MALE_PATTERNS.has(a.pattern)) return "AGA_MALE";
+  // 5. Traction — loss along the edges. The 7-question flow no longer asks
+  // about tight styling, so any edge loss routes here (regrowth support +
+  // scalp care), rather than dead-ending as inconclusive.
+  if (a.pattern === "edges") return "TRACTION";
 
-  // 7. Female pattern.
-  if (a.sex === "female" && AGA_FEMALE_PATTERNS.has(a.pattern)) return "AGA_FEMALE";
-
-  // 9. Fallback.
-  return "INCONCLUSIVE";
+  // 6. General pattern hair loss — any remaining visible thinning (receding,
+  // crown, widening part, or diffuse) is treated as pattern loss so a customer
+  // who came in reporting hair loss always gets a stage + routine instead of a
+  // dead-end. Genuine medical referrals (patchy spots, scalp wounds) already
+  // returned above, and the safety gates still run after product mapping.
+  return a.sex === "male" ? "AGA_MALE" : "AGA_FEMALE";
 }
 
 // ---------------------------------------------------------------------------

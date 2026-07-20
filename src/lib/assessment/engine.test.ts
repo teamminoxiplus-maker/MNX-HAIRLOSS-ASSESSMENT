@@ -43,14 +43,9 @@ describe("classify — §9.1 order, first match wins", () => {
     ).toBe("REFER_SCALP");
   });
 
-  it("edges + daily styling → TRACTION", () => {
-    expect(classify(base({ sex: "female", pattern: "edges", styling: "daily" }))).toBe(
-      "TRACTION",
-    );
-  });
-
-  it("edges without styling → not traction", () => {
-    expect(classify(base({ pattern: "edges", styling: "no" }))).not.toBe("TRACTION");
+  it("edges → TRACTION (styling no longer asked)", () => {
+    expect(classify(base({ sex: "female", pattern: "edges" }))).toBe("TRACTION");
+    expect(classify(base({ pattern: "edges", styling: "no" }))).toBe("TRACTION");
   });
 
   it("diffuse + trigger + recent → TELOGEN_EFFLUVIUM", () => {
@@ -87,9 +82,17 @@ describe("classify — §9.1 order, first match wins", () => {
     );
   });
 
-  it("unmatched combo → INCONCLUSIVE", () => {
+  it("general thinning falls back to pattern loss (no dead-end)", () => {
+    // Female with a receding hairline no longer dead-ends as INCONCLUSIVE —
+    // it routes to pattern hair loss so the customer gets a stage + routine.
     expect(classify(base({ sex: "female", pattern: "receding", scalp: ["normal"] }))).toBe(
-      "INCONCLUSIVE",
+      "AGA_FEMALE",
+    );
+    expect(classify(base({ sex: "male", pattern: "widening_part", scalp: ["normal"] }))).toBe(
+      "AGA_MALE",
+    );
+    expect(classify(base({ sex: "male", pattern: "diffuse", triggers: ["none"] }))).toBe(
+      "AGA_MALE",
     );
   });
 });
