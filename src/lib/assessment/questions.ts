@@ -1,6 +1,12 @@
 // Question bank (spec §8). Typed config, NOT hardcoded JSX — copy gets edited
-// often without touching components. Order here is the on-screen order (1–12).
-import type { Answers } from "./types";
+// often without touching components. Order here is the on-screen order (1–7).
+//
+// The public flow asks 7 questions — the fields that drive concern
+// classification, severity, and (critically) the safety gates. The remaining
+// engine-read fields that aren't asked are back-filled with conservative,
+// neutral defaults via `withDefaults()` so the deterministic engine still gets
+// a complete, valid answer set and no safety gate can ever be bypassed.
+import type { Answers, PartialAnswers } from "./types";
 
 export type QuestionType = "single" | "multi";
 
@@ -13,7 +19,7 @@ export interface Option {
 export interface Question {
   id: keyof Answers;
   type: QuestionType;
-  // Screen number 1–12 (matches /assessment/q/[step]).
+  // Screen number 1–7 (matches /assessment/q/[step]).
   step: number;
   title: string;
   options: Option[];
@@ -106,65 +112,9 @@ export const QUESTIONS: Question[] = [
     ],
   },
   {
-    id: "family_history",
-    type: "single",
-    step: 7,
-    title: "Is there baldness in your family (parents, grandparents, aunts/uncles)?",
-    required: true,
-    options: [
-      { value: "yes", label: "Yes" },
-      { value: "no", label: "No" },
-      { value: "unknown", label: "I don't know" },
-    ],
-  },
-  {
-    id: "triggers",
-    type: "multi",
-    step: 8,
-    title: "Have you experienced any of these in the past year?",
-    required: true,
-    exclusiveValue: "none",
-    options: [
-      { value: "postpartum", label: "Gave birth (postpartum)" },
-      { value: "stress", label: "Severe stress" },
-      { value: "illness", label: "Serious illness or fever" },
-      { value: "crash_diet", label: "Crash diet or sudden weight loss" },
-      { value: "surgery", label: "Surgery" },
-      { value: "none", label: "None of these" },
-    ],
-  },
-  {
-    id: "styling",
-    type: "single",
-    step: 9,
-    title: "Do you often wear tight ponytails, braids, buns, or extensions?",
-    required: true,
-    options: [
-      { value: "daily", label: "Yes, daily" },
-      { value: "sometimes", label: "Sometimes" },
-      { value: "no", label: "No" },
-    ],
-  },
-  {
-    id: "tried",
-    type: "multi",
-    step: 10,
-    title: "What have you already tried?",
-    required: true,
-    exclusiveValue: "none",
-    options: [
-      { value: "minoxidil", label: "Minoxidil" },
-      { value: "finasteride", label: "Finasteride" },
-      { value: "anti_dandruff", label: "Anti-dandruff shampoo" },
-      { value: "supplements", label: "Supplements" },
-      { value: "hair_spa", label: "Hair spa" },
-      { value: "none", label: "Nothing yet" },
-    ],
-  },
-  {
     id: "medical_flags",
     type: "multi",
-    step: 11,
+    step: 7,
     title: "Which of these are true for you?",
     required: true, // hard safety question — never skippable (spec §8)
     exclusiveValue: "none",
@@ -177,20 +127,34 @@ export const QUESTIONS: Question[] = [
       { value: "none", label: "None of these" },
     ],
   },
-  {
-    id: "goal",
-    type: "single",
-    step: 12,
-    title: "What would you most like to happen?",
-    required: true,
-    options: [
-      { value: "stop_shedding", label: "Stop the shedding" },
-      { value: "regrow", label: "Regrow hair on the hairline or crown" },
-      { value: "thicken", label: "Thicken thinning hair" },
-      { value: "fix_dandruff", label: "Fix dandruff and itch" },
-    ],
-  },
 ];
+
+// Conservative defaults for the engine-read fields the 7-question flow doesn't
+// ask. Chosen so they add NO extra risk and trigger no special-case concern:
+//   family_history "unknown" → +0 to severity (neutral)
+//   triggers ["none"]        → no telogen-effluvium classification
+//   styling  "no"            → no traction classification
+//   tried    ["none"]        → informational only (unused by the engine)
+//   goal     "regrow"        → informational only (unused by the engine)
+// Safety gates read sex / age_band / medical_flags — all still asked — so every
+// gate (men-only, under-18, pregnancy, heart, allergy, scalp) stays enforced.
+export const DEFAULT_UNASKED: Pick<
+  Answers,
+  "family_history" | "triggers" | "styling" | "tried" | "goal"
+> = {
+  family_history: "unknown",
+  triggers: ["none"],
+  styling: "no",
+  tried: ["none"],
+  goal: "regrow",
+};
+
+// Merge the collected answers over the neutral defaults, producing a complete
+// answer set the shared `answersSchema` and engine accept. Collected values
+// always win — defaults only fill fields the flow no longer asks.
+export function withDefaults(a: PartialAnswers): PartialAnswers {
+  return { ...DEFAULT_UNASKED, ...a };
+}
 
 export const TOTAL_STEPS = QUESTIONS.length;
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { QUESTIONS } from "@/lib/assessment/questions";
+import { QUESTIONS, withDefaults } from "@/lib/assessment/questions";
 import { answersSchema, contactSchema } from "@/lib/assessment/schema";
 import {
   clearSession,
@@ -34,9 +34,11 @@ export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const a = getAnswers(kiosk);
+    // Back-fill neutral defaults for the engine-read fields the 7-question
+    // flow doesn't ask, so the completed set validates against the full schema.
+    const a = withDefaults(getAnswers(kiosk));
     logEvent(getSessionId(kiosk), "contact", "view");
-    // Guard: if any question is unanswered, send them back to fill it.
+    // Guard: if any asked question is unanswered, send them back to fill it.
     const parsed = answersSchema.safeParse(a);
     if (!parsed.success) {
       const firstMissing = QUESTIONS.find(

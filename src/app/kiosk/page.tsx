@@ -40,7 +40,7 @@ export default function KioskPage() {
           Free Hair Loss Assessment
         </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-300">
-          Takes 90 seconds. Tap start and answer 12 questions.
+          Takes 60 seconds. Tap start and answer 7 questions.
         </p>
         <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
           <span aria-hidden>✔</span> {REVIEWED_BY}
