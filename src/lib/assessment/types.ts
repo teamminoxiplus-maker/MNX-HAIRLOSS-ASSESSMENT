@@ -96,7 +96,8 @@ export type EngineFlag =
   | "PREGNANCY"
   | "MINOXIDIL_ALLERGY"
   | "SCALP_CONDITION"
-  | "MEN_ONLY_FILTERED";
+  | "MEN_ONLY_FILTERED"
+  | "PATCHY_ADVISORY";
 
 export type ProductId =
   | "signature_hair_grower"

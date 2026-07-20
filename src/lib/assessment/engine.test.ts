@@ -33,8 +33,9 @@ const hasMinoxidil = (ids: ProductId[]) =>
   ids.some((id) => PRODUCTS[id].containsMinoxidil);
 
 describe("classify — §9.1 order, first match wins", () => {
-  it("patchy → REFER_PATCHY (beats everything)", () => {
-    expect(classify(base({ pattern: "patchy", sex: "male" }))).toBe("REFER_PATCHY");
+  it("patchy now flows to pattern loss (business decision), not a hard refer", () => {
+    expect(classify(base({ pattern: "patchy", sex: "male" }))).toBe("AGA_MALE");
+    expect(classify(base({ pattern: "patchy", sex: "female" }))).toBe("AGA_FEMALE");
   });
 
   it("scalp wound → REFER_SCALP", () => {
@@ -235,6 +236,23 @@ describe("safety gates — §9.4 (NON-NEGOTIABLE)", () => {
     if (r.recommended_products.length === 0) {
       expect(r.referral_required).toBe(true);
     }
+  });
+});
+
+describe("patchy — supportive routine + advisory (no forced consult)", () => {
+  it("severe male patchy → a bundle + PATCHY_ADVISORY, not a referral", () => {
+    const r = runEngine(
+      base({ sex: "male", pattern: "patchy", duration: "gt_3y", shedding: "clumps", family_history: "yes" }),
+    );
+    expect(r.referral_required).toBe(false);
+    expect(r.recommended_products.length).toBeGreaterThan(0);
+    expect(r.flags).toContain("PATCHY_ADVISORY");
+  });
+
+  it("patchy still refers when a real safety gate fires (scalp wound)", () => {
+    const r = runEngine(base({ pattern: "patchy", medical_flags: ["scalp_wound"] }));
+    expect(r.referral_required).toBe(true);
+    expect(r.flags).not.toContain("PATCHY_ADVISORY");
   });
 });
 

@@ -24,6 +24,7 @@ export const FLAG_LABEL: Record<EngineFlag, string> = {
   MINOXIDIL_ALLERGY: "Minoxidil allergy",
   SCALP_CONDITION: "Scalp condition",
   MEN_ONLY_FILTERED: "Men-only filtered",
+  PATCHY_ADVISORY: "Patchy — advise doctor",
 };
 
 export function flagLabels(flags: EngineFlag[] | null | undefined): string[] {

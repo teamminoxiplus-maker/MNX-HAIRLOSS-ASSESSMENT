@@ -178,6 +178,8 @@ export const FLAG_COPY: Partial<Record<EngineFlag, string>> = {
     "Because of your Minoxidil allergy, we've removed all Minoxidil products from your recommendation.",
   SCALP_CONDITION:
     "Because of the scalp condition, it needs to be treated first before any topical treatment.",
+  PATCHY_ADVISORY:
+    "You mentioned patchy or circular spots. This can sometimes have a different cause, so we recommend confirming with a doctor alongside your routine.",
 };
 
 // Consult block copy for REFER routes (spec §10 — replaces sections 4–6).

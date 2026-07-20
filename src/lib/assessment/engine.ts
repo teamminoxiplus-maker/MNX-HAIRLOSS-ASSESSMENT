@@ -33,10 +33,13 @@ function hasAny<T>(arr: T[] | undefined, set: Set<T>): boolean {
 // treating both concerns is the more specific, correct outcome, so it wins.
 // ---------------------------------------------------------------------------
 export function classify(a: Answers): Concern {
-  // 1. Patchy spots → possible alopecia areata. Refer, no product push.
-  if (a.pattern === "patchy") return "REFER_PATCHY";
+  // NOTE (business decision): patchy/circular spots used to route straight to a
+  // consult (possible alopecia areata). Per the owner's request it now flows
+  // into the normal pattern-loss path so it gets a supportive routine + bundle,
+  // and runEngine attaches a PATCHY_ADVISORY flag recommending a doctor's check.
+  // The other referrals and safety gates below still apply to patchy answers.
 
-  // 2. Open scalp wound / skin condition → treat scalp first, refer.
+  // 1. Open scalp wound / skin condition → treat scalp first, refer.
   if (a.medical_flags.includes("scalp_wound")) return "REFER_SCALP";
 
   // 3. Telogen effluvium — diffuse shed after a recent trigger, ≤12 months.
@@ -247,10 +250,17 @@ export function runEngine(a: Answers): EngineResult {
     concern === "REFER_PATCHY" || concern === "REFER_SCALP";
   const referral_required = isReferConcern || gated.referral;
 
+  const flags = [...gated.flags];
+  // Patchy/circular loss can have another cause (e.g. alopecia areata), so keep
+  // a visible advisory even when we recommend a supportive routine.
+  if (a.pattern === "patchy" && !referral_required) {
+    flags.push("PATCHY_ADVISORY");
+  }
+
   return {
     concern,
     severity: sev,
-    flags: gated.flags,
+    flags,
     recommended_products: gated.products,
     referral_required,
   };
