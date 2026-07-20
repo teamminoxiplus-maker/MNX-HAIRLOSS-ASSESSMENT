@@ -26,7 +26,7 @@ export function MinoxLogo({ className }: { className?: string }) {
         src="/minoxiplus-logo.png"
         alt="Minoxiplus"
         className={cn(
-          "h-24 w-auto sm:h-28 drop-shadow-[0_4px_22px_rgba(52,211,153,0.28)]",
+          "h-36 w-auto sm:h-44 drop-shadow-[0_6px_30px_rgba(52,211,153,0.32)]",
           className,
         )}
         onError={() => setImgFailed(true)}
