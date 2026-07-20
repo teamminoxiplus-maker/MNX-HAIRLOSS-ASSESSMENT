@@ -61,13 +61,19 @@ function buildHtml({ fullName, result, token, aiAnalysis }: EmailArgs): string {
   const bundle = bundleId ? BUNDLES[bundleId] : null;
   const bundleHtml = bundle
     ? `<div style="background:#0b1f4d;border-radius:12px;padding:18px;margin:16px 0;color:#fff">
-         <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#93c5fd">Recommended for you · Save with the system</div>
+         <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#93c5fd">Recommended for your stage</div>
          <div style="font-size:18px;font-weight:800;margin-top:4px">${esc(bundle.name)}</div>
          <div style="font-size:13px;color:#dbeafe">${esc(bundle.system)}</div>
-         <ul style="margin:12px 0;padding-left:18px;font-size:13px;color:#eff6ff">
-           ${bundle.items.map((it) => `<li style="margin:3px 0">${esc(it)}</li>`).join("")}
-         </ul>
-         <div style="font-size:13px;color:#93c5fd;text-decoration:line-through">${esc(formatPHP(bundle.srp))}</div>
+         <p style="margin:10px 0;font-size:13px;color:#dbeafe;line-height:1.5">${esc(bundle.whyMatch)}</p>
+         <div style="border-top:1px solid rgba(255,255,255,.15);margin-top:8px;padding-top:8px">
+           ${bundle.items
+             .map(
+               (it) =>
+                 `<div style="margin:8px 0;font-size:13px"><strong>${esc(it.qty)} — ${esc(it.name)}</strong> <span style="color:#93c5fd">${esc(it.use)}</span><br><span style="color:#dbeafe">${esc(it.why)}</span></div>`,
+             )
+             .join("")}
+         </div>
+         <div style="font-size:13px;color:#93c5fd;text-decoration:line-through;margin-top:8px">${esc(formatPHP(bundle.srp))}</div>
          <div style="font-size:22px;font-weight:800">${esc(formatPHP(bundle.promo))} <span style="font-size:12px;font-weight:600;color:#bfdbfe">· Only ₱${bundle.perDay}/day</span></div>
          <a href="${CONSULT.messenger}" style="display:inline-block;background:#fff;color:#0b1f4d;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:12px">Order this system</a>
        </div>`

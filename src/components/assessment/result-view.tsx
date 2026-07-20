@@ -7,6 +7,7 @@ import {
   FLAG_COPY,
   REVIEWED_BY,
   SEVERITY_COPY,
+  STAGE_COPY,
   TIMELINE,
 } from "@/lib/assessment/copy";
 import { CONSULT, PRODUCTS, STOREFRONTS } from "@/lib/assessment/products";
@@ -14,16 +15,15 @@ import { BUNDLES, recommendBundle } from "@/lib/assessment/bundles";
 import { formatPHP } from "@/lib/utils";
 import type { Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
 
-// Severity → brand "Stage" framing + severity-meter position (matches the
-// original screening design).
-const STAGE: Record<Severity, { n: string; pct: number }> = {
-  Early: { n: "Stage 1", pct: 22 },
-  Moderate: { n: "Stage 2", pct: 55 },
-  Advanced: { n: "Stage 3", pct: 85 },
+// Severity-meter position for each stage (visual only).
+const METER_PCT: Record<Severity, number> = {
+  Early: 22,
+  Moderate: 55,
+  Advanced: 85,
 };
 
 // Renders the result from the stored derived fields (spec §10). Same copy.ts
-// blocks as the email → the two never drift.
+// blocks as the email → the two never drift. Stage-based "screening" design.
 export function ResultView({
   concern,
   severity,
@@ -43,11 +43,10 @@ export function ResultView({
 }) {
   const cc = CONCERN_COPY[concern];
   const sev = SEVERITY_COPY[severity];
+  const stage = STAGE_COPY[severity];
   const flagLines = flags.map((f) => FLAG_COPY[f]).filter(Boolean) as string[];
   const bundleId = recommendBundle(concern, severity, products, referral);
   const bundle = bundleId ? BUNDLES[bundleId] : null;
-
-  const stage = STAGE[severity];
 
   return (
     <div className="space-y-6">
@@ -59,16 +58,17 @@ export function ResultView({
         </p>
 
         {!referral && (
-          <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="font-serif text-3xl font-medium text-amber-400">
-                  {stage.n}
-                </div>
-                <div className="text-sm text-slate-300">{cc.label}</div>
-              </div>
-              <span className="rounded-full border border-amber-400/40 px-3 py-1 text-xs font-semibold text-amber-300">
-                {sev.label}
+          <div className="mt-3 rounded-2xl border border-amber-400/25 bg-white/[0.03] p-4">
+            {/* stage badge row */}
+            <div className="flex flex-wrap items-center gap-2 rounded-xl border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
+              <span className="font-serif text-lg font-medium text-amber-300">
+                {stage.stage} — {stage.label}
+              </span>
+              <span className="text-amber-400/60" aria-hidden>
+                →
+              </span>
+              <span className="text-xs font-medium text-slate-400">
+                Matched Protocol
               </span>
             </div>
 
@@ -80,7 +80,7 @@ export function ResultView({
               <div className="relative h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-500">
                 <span
                   className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#080b14] bg-white shadow"
-                  style={{ left: `${stage.pct}%` }}
+                  style={{ left: `${METER_PCT[severity]}%` }}
                 />
               </div>
               <div className="mt-1 flex justify-between text-[10px] text-slate-500">
@@ -100,18 +100,26 @@ export function ResultView({
         </p>
       </section>
 
-      {/* safety flag lines */}
-      {flagLines.length > 0 && (
-        <section className="space-y-2 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4">
-          {flagLines.map((t) => (
-            <p key={t} className="text-sm text-amber-200">
-              ⚠️ {t}
-            </p>
-          ))}
+      {/* 2. Recommended timing (severity-based, hedged) */}
+      {!referral && (
+        <section className="rounded-2xl border border-amber-400/30 bg-amber-400/[0.06] p-4">
+          <div className="flex items-start gap-2.5">
+            <span aria-hidden className="mt-0.5 text-amber-300">
+              ⚠️
+            </span>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-300">
+                {stage.timingLabel}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-amber-100">
+                {stage.timing}
+              </p>
+            </div>
+          </div>
         </section>
       )}
 
-      {/* 2b. AI-powered interpretation (prose only — engine still owns safety) */}
+      {/* 3. AI-powered interpretation (prose only — engine still owns safety) */}
       {aiAnalysis && (
         <section className="rounded-2xl border border-emerald-400/25 bg-emerald-400/[0.05] p-4">
           <div className="flex items-center gap-2">
@@ -122,18 +130,32 @@ export function ResultView({
               {AI_ANALYSIS_LABEL}
             </h2>
           </div>
-          <p className="mt-2 text-sm leading-relaxed text-slate-100">
+          <p className="mt-1 text-[11px] text-slate-500">{AI_ANALYSIS_NOTE}</p>
+          <p className="mt-3 text-[15px] leading-relaxed text-slate-100">
             {aiAnalysis}
           </p>
-          <p className="mt-2 text-[11px] text-slate-500">{AI_ANALYSIS_NOTE}</p>
         </section>
       )}
 
-      {/* 3. What's happening */}
+      {/* safety flag lines */}
+      {flagLines.length > 0 && (
+        <section className="space-y-2 rounded-2xl border border-rose-400/30 bg-rose-400/10 p-4">
+          {flagLines.map((t) => (
+            <p key={t} className="text-sm text-rose-200">
+              ⚠️ {t}
+            </p>
+          ))}
+        </section>
+      )}
+
+      {/* 4. Clinical note (stage-based) */}
       <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-        <h2 className="text-sm font-bold text-white">What&apos;s happening</h2>
-        <p className="mt-1 text-sm leading-relaxed text-slate-300">
-          {cc.whatsHappening}
+        <div className="flex items-center gap-2">
+          <span aria-hidden>📋</span>
+          <h2 className="text-sm font-bold text-white">Clinical Note</h2>
+        </div>
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+          {referral ? cc.whatsHappening : stage.note}
         </p>
         {!aiAnalysis && (
           <p className="mt-2 text-xs font-medium text-slate-500">{REVIEWED_BY}</p>
@@ -141,7 +163,7 @@ export function ResultView({
       </section>
 
       {referral ? (
-        /* Consult block replaces routine / timeline / buy (spec §10) */
+        /* Consult block replaces routine / protocol / buy (spec §10) */
         <section className="rounded-2xl border border-emerald-400/40 bg-emerald-400/[0.06] p-5 text-center">
           <h2 className="font-serif text-2xl font-medium text-white">
             {CONSULT_COPY.heading}
@@ -178,67 +200,78 @@ export function ResultView({
         </section>
       ) : (
         <>
-          {/* 4. Routine */}
-          <section>
-            <h2 className="text-sm font-bold text-white">
-              {cc.routineIntro || "Your routine"}
-            </h2>
-            <div className="mt-3 space-y-3">
-              {products.map((id) => {
-                const p = PRODUCTS[id];
-                return (
-                  <div
-                    key={id}
-                    className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-white">{p.name}</h3>
-                      <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-slate-300">
-                        {p.actives}
-                      </span>
-                    </div>
-                    <p className="mt-1.5 text-sm text-slate-300">{p.why}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      How to use: {p.howToUse}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* 4b. Complete-system bundle — matched "protocol" (safety-gated) */}
+          {/* 5. Gold CTA → jump to the matched protocol */}
           {bundle && (
-            <section className="overflow-hidden rounded-2xl border border-amber-400/30 bg-white/[0.03]">
+            <a
+              href="#protocol"
+              className="block rounded-2xl bg-gradient-to-r from-amber-300 to-amber-500 px-5 py-4 text-center text-base font-bold text-slate-950 shadow-lg shadow-amber-500/20"
+            >
+              View My Personalized Treatment Protocol →
+            </a>
+          )}
+
+          {/* 6a. Matched protocol (bundle) — the "why + what's included" panel */}
+          {bundle && (
+            <section
+              id="protocol"
+              className="overflow-hidden rounded-2xl border border-amber-400/30 bg-white/[0.03] scroll-mt-4"
+            >
               <div className="p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-400">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/40 px-3 py-1 text-xs font-semibold text-amber-300">
                   Recommended for your stage
-                </p>
-                <h2 className="mt-1 font-serif text-3xl font-medium text-amber-400">
+                </div>
+                <h2 className="font-serif text-3xl font-medium leading-tight text-amber-400">
                   {bundle.name}
                 </h2>
-                <p className="text-sm font-medium text-slate-300">{bundle.system}</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                  {bundle.tagline}
+                <p className="text-sm font-medium text-slate-300">
+                  {bundle.system}
                 </p>
 
-                <ul className="mt-4 space-y-1.5 border-t border-white/10 pt-4 text-sm text-slate-200">
-                  {bundle.items.map((it) => (
-                    <li key={it} className="flex gap-2">
-                      <span className="text-amber-400" aria-hidden>
-                        ✓
-                      </span>
-                      <span>{it}</span>
-                    </li>
-                  ))}
-                </ul>
+                {/* why this protocol matches */}
+                <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500">
+                    Why this protocol matches your assessment
+                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
+                    {bundle.whyMatch}
+                  </p>
+                </div>
 
-                <div className="mt-4 flex items-end gap-3 border-t border-white/10 pt-4">
+                {/* what's included — and why each item matters */}
+                <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500">
+                  What&apos;s included — and why each item matters
+                </p>
+                <div className="mt-3 space-y-3">
+                  {bundle.items.map((it) => (
+                    <div
+                      key={it.name}
+                      className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5"
+                    >
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h3 className="text-sm font-bold text-white">
+                          {it.qty} — {it.name}
+                        </h3>
+                        <span className="shrink-0 text-[11px] text-slate-400">
+                          {it.use}
+                        </span>
+                      </div>
+                      <p className="mt-1 flex gap-2 text-sm text-slate-300">
+                        <span className="text-amber-400" aria-hidden>
+                          •
+                        </span>
+                        <span>{it.why}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* price */}
+                <div className="mt-5 flex items-end gap-3 border-t border-white/10 pt-4">
                   <div>
                     <span className="text-sm text-slate-500 line-through">
                       {formatPHP(bundle.srp)}
                     </span>
-                    <div className="text-2xl font-extrabold text-white">
+                    <div className="text-3xl font-extrabold text-white">
                       {formatPHP(bundle.promo)}
                     </div>
                   </div>
@@ -250,7 +283,7 @@ export function ResultView({
 
                 <a
                   href={CONSULT.messenger}
-                  className="mt-4 block rounded-xl bg-gradient-to-r from-amber-300 to-amber-500 px-4 py-3 text-center font-bold text-slate-950"
+                  className="mt-4 block rounded-xl bg-gradient-to-r from-amber-300 to-amber-500 px-4 py-3.5 text-center font-bold text-slate-950"
                 >
                   Order this system →
                 </a>
@@ -272,7 +305,38 @@ export function ResultView({
             </section>
           )}
 
-          {/* 5. Timeline */}
+          {/* 6b. Routine cards — when no full-system bundle is matched */}
+          {!bundle && products.length > 0 && (
+            <section>
+              <h2 className="text-sm font-bold text-white">
+                {cc.routineIntro || "Your routine"}
+              </h2>
+              <div className="mt-3 space-y-3">
+                {products.map((id) => {
+                  const p = PRODUCTS[id];
+                  return (
+                    <div
+                      key={id}
+                      className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-bold text-white">{p.name}</h3>
+                        <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-slate-300">
+                          {p.actives}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 text-sm text-slate-300">{p.why}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        How to use: {p.howToUse}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* 7. Timeline */}
           <section>
             <h2 className="text-sm font-bold text-white">What to expect</h2>
             <ol className="mt-3 space-y-3">
@@ -287,7 +351,7 @@ export function ResultView({
             </ol>
           </section>
 
-          {/* 6. Where to buy */}
+          {/* 8. Where to buy */}
           <section>
             <h2 className="text-sm font-bold text-white">Where to buy</h2>
             <div className="mt-3 grid grid-cols-2 gap-2">
@@ -320,7 +384,7 @@ export function ResultView({
         </>
       )}
 
-      {/* 7. Consult CTA (also on product results) */}
+      {/* 9. Consult CTA (also on product results) */}
       {!referral && (
         <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
           <p className="text-sm text-slate-300">Have a question? Just message us.</p>
@@ -353,7 +417,7 @@ export function ResultView({
         </section>
       )}
 
-      {/* 8. Disclaimer */}
+      {/* 10. Disclaimer */}
       <p className="border-t border-white/10 pt-4 text-[11px] leading-relaxed text-slate-500">
         {DISCLAIMER}
       </p>

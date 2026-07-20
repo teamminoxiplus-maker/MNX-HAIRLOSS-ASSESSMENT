@@ -28,8 +28,8 @@ const bundleFor = (a: Answers) => {
 
 describe("recommendBundle — safety-gated", () => {
   it("PRO/ADVANCED bundles always contain TriActive (men-only)", () => {
-    expect(BUNDLES.PRO.items.join(" ")).toMatch(/TriActive/);
-    expect(BUNDLES.ADVANCED.items.join(" ")).toMatch(/TriActive/);
+    expect(BUNDLES.PRO.items.map((i) => i.name).join(" ")).toMatch(/TriActive/);
+    expect(BUNDLES.ADVANCED.items.map((i) => i.name).join(" ")).toMatch(/TriActive/);
     expect(BUNDLES.PRO.menOnly).toBe(true);
     expect(BUNDLES.ADVANCED.menOnly).toBe(true);
     expect(BUNDLES.STARTER.menOnly).toBe(false);

@@ -25,7 +25,10 @@ export function MinoxLogo({ className }: { className?: string }) {
       <img
         src="/minoxiplus-logo.png"
         alt="Minoxiplus"
-        className={cn("h-11 w-auto", className)}
+        className={cn(
+          "h-16 w-auto drop-shadow-[0_2px_12px_rgba(52,211,153,0.18)]",
+          className,
+        )}
         onError={() => setImgFailed(true)}
       />
     );
@@ -61,7 +64,7 @@ export function MinoxShell({
       }}
     >
       {showHeader && (
-        <header className="flex items-center justify-center px-4 pt-6 pb-2">
+        <header className="flex items-center justify-center px-4 pt-7 pb-3">
           <MinoxLogo />
         </header>
       )}

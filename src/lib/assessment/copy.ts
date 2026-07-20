@@ -6,17 +6,16 @@ import type { Concern, EngineFlag, Severity } from "./types";
 
 // Carried on every result page and email (spec §9.5).
 export const DISCLAIMER =
-  "This is not a medical diagnosis. For personal advice, just message us or consult Doc Ryan Encabo.";
+  "This is not a medical diagnosis. For personal advice, just message us or consult a licensed doctor.";
 
 // Credibility marker shown on the landing, kiosk, and result. The assessment
 // now leads with its AI-powered interpretation.
 export const REVIEWED_BY = "AI-Powered Analysis";
 
-// Heading + footnote for the personalized AI interpretation block. The footnote
-// is deliberately explicit that safety stays with the deterministic rules.
+// Heading + footnote for the personalized AI interpretation block.
 export const AI_ANALYSIS_LABEL = "AI-Powered Analysis";
 export const AI_ANALYSIS_NOTE =
-  "Personalized by AI from your answers, then safety-checked by our clinical rules.";
+  "Generated from your 7 answers · Not a substitute for in-person consultation.";
 
 export const PREGNANCY_LINE =
   "For your safety and your baby's, let's talk to the doctor first before starting any treatment.";
@@ -82,7 +81,7 @@ export const CONCERN_COPY: Record<Concern, ConcernCopy> = {
     headline:
       "Based on your answers, you're noticing patchy or circular spots. This may have a different cause that should be checked in person before recommending any product.",
     whatsHappening:
-      "Patchy hair loss isn't addressed by over-the-counter regrowth products. It's safer to consult Doc Ryan Encabo first.",
+      "Patchy hair loss isn't addressed by over-the-counter regrowth products. It's safer to consult a doctor first.",
     routineIntro: "",
   },
   REFER_SCALP: {
@@ -119,6 +118,39 @@ export const SEVERITY_COPY: Record<Severity, { label: string; note: string }> = 
   },
 };
 
+// Stage framing for the result header + timing banner + clinical note. Mirrors
+// the brand's original "Stage 1/2/3" screening design. All wording stays within
+// the §9.5 claim rules — hedged, no guarantees, no "diagnosis".
+export const STAGE_COPY: Record<
+  Severity,
+  { stage: string; label: string; timingLabel: string; timing: string; note: string }
+> = {
+  Early: {
+    stage: "Stage 1",
+    label: "Early Hair Loss",
+    timingLabel: "Recommended timing",
+    timing:
+      "Early — this is the best time to act. Starting a consistent routine now gives the strongest chance to slow it down.",
+    note: "At this stage, thinning is just beginning. Acting early — supporting the follicles and keeping the scalp healthy — gives you the best chance to keep the hair you have.",
+  },
+  Moderate: {
+    stage: "Stage 2",
+    label: "Active Hair Loss",
+    timingLabel: "Recommended timing",
+    timing:
+      "Moderate — worth starting soon. A consistent routine over the coming weeks can help slow the thinning.",
+    note: "At this stage, thinning is active and the follicles need more support — targeting DHT at the scalp, improving circulation, and supporting hair health together. Without a consistent routine, it tends to progress over time.",
+  },
+  Advanced: {
+    stage: "Stage 3",
+    label: "Advanced Hair Loss",
+    timingLabel: "Recommended timing",
+    timing:
+      "Advanced — the thinning is more established. A consistent, complete routine is important, and a consultation is recommended.",
+    note: "At this stage, thinning is more established. A complete, consistent routine matters most now, and an in-person consultation can help set the right expectations for what's still possible.",
+  },
+};
+
 // Honest timeline expectation, incl. the shedding phase (spec §10 §5).
 export const TIMELINE = [
   {
@@ -151,6 +183,6 @@ export const FLAG_COPY: Partial<Record<EngineFlag, string>> = {
 // Consult block copy for REFER routes (spec §10 — replaces sections 4–6).
 export const CONSULT_COPY = {
   heading: "Let's talk to the team first",
-  body: "To make sure the routine is right and safe for you, it's best to speak with our team — or Doc Ryan Encabo — in person first. Asking is free.",
+  body: "To make sure the routine is right and safe for you, it's best to speak with our team in person first. Asking is free.",
   cta: "Message us",
 };

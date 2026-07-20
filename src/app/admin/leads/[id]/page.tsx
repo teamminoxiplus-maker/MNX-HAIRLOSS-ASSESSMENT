@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLead } from "@/lib/assessment/queries";
 import { concernLabel, flagLabels, productList } from "@/lib/assessment/labels";
-import { QUESTIONS, labelForAnswer } from "@/lib/assessment/questions";
+import { ALL_FIELDS, labelForAnswer } from "@/lib/assessment/questions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/utils";
 import { LeadControls } from "./lead-controls";
@@ -92,7 +92,7 @@ export default async function LeadDetail({ params }: { params: { id: string } })
         </CardHeader>
         <CardContent>
           <dl className="grid gap-4 sm:grid-cols-2">
-            {QUESTIONS.map((q) => {
+            {ALL_FIELDS.map((q) => {
               const raw = (answers as Record<string, unknown>)[q.id];
               let display = "—";
               if (Array.isArray(raw)) {

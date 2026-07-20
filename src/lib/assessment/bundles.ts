@@ -8,12 +8,21 @@ import type { Concern, ProductId, Severity } from "./types";
 
 export type BundleId = "STARTER" | "ADVANCED" | "PRO";
 
+// One line per included product: what it is, how it's used, and why it matters.
+export interface BundleItem {
+  qty: string; // e.g. "3 pcs"
+  name: string;
+  use: string; // e.g. "Apply 2× daily"
+  why: string; // one-line rationale
+}
+
 export interface Bundle {
   id: BundleId;
   name: string;
   system: string;
   tagline: string;
-  items: string[];
+  whyMatch: string; // "why this protocol matches your assessment"
+  items: BundleItem[];
   srp: number;
   promo: number;
   perDay: number;
@@ -28,10 +37,27 @@ export const BUNDLES: Record<BundleId, Bundle> = {
     system: "3-Month Hair Regrowth System",
     tagline:
       "Targets DHT, supports hair follicles, and helps restore scalp health over your 90-day routine.",
+    whyMatch:
+      "Your stage shows early, active thinning that responds well to a focused topical-and-support routine.",
     items: [
-      "3 pcs Minoxiplus Signature (use 2x a day)",
-      "2 pcs Ketoconazole Shampoo (use 3–4x / week)",
-      "3 pcs Hair Growth Supplements (3 caps per day)",
+      {
+        qty: "3 pcs",
+        name: "Minoxiplus Signature",
+        use: "Apply 2× daily",
+        why: "5% Minoxidil topical that supports regrowth at the hairline and crown.",
+      },
+      {
+        qty: "2 pcs",
+        name: "Ketoconazole Shampoo",
+        use: "Use 3–4× / week",
+        why: "Clears the dandruff and buildup that can block healthy growth.",
+      },
+      {
+        qty: "3 pcs",
+        name: "Hair Growth Supplements",
+        use: "3 capsules per day",
+        why: "Supports hair strength and thickness from within.",
+      },
     ],
     srp: 5272,
     promo: 4744,
@@ -45,11 +71,33 @@ export const BUNDLES: Record<BundleId, Bundle> = {
     system: "3-Month Hair Regrowth System",
     tagline:
       "Targets DHT, supports hair follicles, and helps restore scalp health over your 90-day routine.",
+    whyMatch:
+      "Your stage shows active follicle miniaturization that needs a stronger approach — the TriActive formula plus scalp support to enhance circulation and absorption.",
     items: [
-      "3 pcs TriActive (use 2x a day)",
-      "2 pcs Ketoconazole Shampoo (use 3–4x / week)",
-      "1 pc Scalp Massager (use 2x a day)",
-      "3 pcs Hair Growth Supplements (3 caps per day)",
+      {
+        qty: "3 pcs",
+        name: "TriActive Serum",
+        use: "Apply 1–2× daily",
+        why: "Triple-action: targets DHT, stimulates follicles, and conditions the scalp.",
+      },
+      {
+        qty: "2 pcs",
+        name: "Ketoconazole Shampoo",
+        use: "Use 3–4× / week",
+        why: "Controls scalp DHT and clears inflammation that blocks follicles.",
+      },
+      {
+        qty: "1 pc",
+        name: "Scalp Massager",
+        use: "Use 2× daily",
+        why: "Boosts circulation so the topical absorbs better.",
+      },
+      {
+        qty: "3 pcs",
+        name: "Hair Growth Supplements",
+        use: "3 capsules per day",
+        why: "Provides systemic nutritional support for stronger hair.",
+      },
     ],
     srp: 6761,
     promo: 6085,
@@ -63,12 +111,39 @@ export const BUNDLES: Record<BundleId, Bundle> = {
     system: "3-Month Regrowth System (with Microneedling)",
     tagline:
       "Targets DHT, supports hair follicles, and helps restore scalp health over your 90-day routine.",
+    whyMatch:
+      "Your stage is more established, so this adds micro-needling to the TriActive system to maximize absorption and follicle stimulation.",
     items: [
-      "3 pcs TriActive (use 2x a day)",
-      "2 pcs Ketoconazole Shampoo (use 3–4x / week)",
-      "1 pc Scalp Massager (use 2x a day)",
-      "3 pcs Hair Growth Supplements (3 caps per day)",
-      "3 pcs Derma Stamp (use 0.5mm 2x a week)",
+      {
+        qty: "3 pcs",
+        name: "TriActive Serum",
+        use: "Apply 1–2× daily",
+        why: "Triple-action: targets DHT, stimulates follicles, and conditions the scalp.",
+      },
+      {
+        qty: "2 pcs",
+        name: "Ketoconazole Shampoo",
+        use: "Use 3–4× / week",
+        why: "Controls scalp DHT and clears inflammation that blocks follicles.",
+      },
+      {
+        qty: "1 pc",
+        name: "Scalp Massager",
+        use: "Use 2× daily",
+        why: "Boosts circulation so the topical absorbs better.",
+      },
+      {
+        qty: "3 pcs",
+        name: "Hair Growth Supplements",
+        use: "3 capsules per day",
+        why: "Provides systemic nutritional support for stronger hair.",
+      },
+      {
+        qty: "3 pcs",
+        name: "Derma Stamp",
+        use: "0.5mm, 2× a week",
+        why: "Micro-needling that enhances absorption and follicle activity.",
+      },
     ],
     srp: 8858,
     promo: 7972,
