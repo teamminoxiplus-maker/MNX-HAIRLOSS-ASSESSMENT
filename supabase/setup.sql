@@ -42,6 +42,7 @@ create table if not exists public.assessments (
   flags                 text[] not null default '{}',
   recommended_products  text[] not null default '{}',
   referral_required     boolean not null default false,
+  ai_analysis           text,                              -- AI prose interpretation (nullable)
   -- attribution
   src                   text,
   utm_source            text,

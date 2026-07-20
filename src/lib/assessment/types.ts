@@ -133,6 +133,7 @@ export interface AssessmentRow {
   flags: EngineFlag[];
   recommended_products: ProductId[];
   referral_required: boolean;
+  ai_analysis: string | null;
   src: string | null;
   utm_source: string | null;
   utm_medium: string | null;

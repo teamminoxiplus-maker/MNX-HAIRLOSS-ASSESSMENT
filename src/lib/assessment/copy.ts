@@ -8,7 +8,15 @@ import type { Concern, EngineFlag, Severity } from "./types";
 export const DISCLAIMER =
   "This is not a medical diagnosis. For personal advice, just message us or consult Doc Ryan Encabo.";
 
-export const REVIEWED_BY = "Reviewed by Doc Ryan Encabo";
+// Credibility marker shown on the landing, kiosk, and result. The assessment
+// now leads with its AI-powered interpretation.
+export const REVIEWED_BY = "AI-Powered Analysis";
+
+// Heading + footnote for the personalized AI interpretation block. The footnote
+// is deliberately explicit that safety stays with the deterministic rules.
+export const AI_ANALYSIS_LABEL = "AI-Powered Analysis";
+export const AI_ANALYSIS_NOTE =
+  "Personalized by AI from your answers, then safety-checked by our clinical rules.";
 
 export const PREGNANCY_LINE =
   "For your safety and your baby's, let's talk to the doctor first before starting any treatment.";

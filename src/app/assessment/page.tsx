@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 export default function AssessmentLanding() {
   const features = [
     { icon: "🩺", label: "Clinically designed questions" },
-    { icon: "👨‍⚕️", label: "Reviewed by Doc Ryan Encabo" },
-    { icon: "🆓", label: "100% free — no strings" },
+    { icon: "🤖", label: "AI-powered analysis" },
+    { icon: "🆓", label: "Free — no strings" },
     { icon: "🔒", label: "Your answers stay private" },
   ];
 

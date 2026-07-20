@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { submitSchema } from "@/lib/assessment/schema";
 import { assessmentDb } from "@/lib/assessment/persist";
 import { runEngine } from "@/lib/assessment/engine";
+import { generateAnalysis } from "@/lib/assessment/ai";
 import { resultToken } from "@/lib/assessment/token";
 import { normalizePhone } from "@/lib/assessment/phone";
 import { sendResultEmail } from "@/lib/assessment/email";
@@ -55,6 +56,10 @@ export async function POST(req: Request) {
   const result = runEngine(d.answers);
   const token = resultToken();
 
+  // AI-powered interpretation — prose only, derived from the already-gated
+  // engine result. Fails safe to null (static copy) and never blocks the submit.
+  const aiAnalysis = await generateAnalysis(d.answers, result);
+
   try {
     const db = assessmentDb();
     const { error } = await db.from("assessments").upsert(
@@ -74,6 +79,7 @@ export async function POST(req: Request) {
         flags: result.flags,
         recommended_products: result.recommended_products,
         referral_required: result.referral_required,
+        ai_analysis: aiAnalysis,
         src: d.src,
         utm_source: d.utm_source,
         utm_medium: d.utm_medium,
@@ -104,6 +110,7 @@ export async function POST(req: Request) {
     fullName: d.contact.full_name,
     result,
     token,
+    aiAnalysis,
   });
 
   return NextResponse.json({ token });

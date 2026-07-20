@@ -1,4 +1,6 @@
 import {
+  AI_ANALYSIS_LABEL,
+  AI_ANALYSIS_NOTE,
   CONCERN_COPY,
   CONSULT_COPY,
   DISCLAIMER,
@@ -29,6 +31,7 @@ export function ResultView({
   products,
   referral,
   fullName,
+  aiAnalysis,
 }: {
   concern: Concern;
   severity: Severity;
@@ -36,6 +39,7 @@ export function ResultView({
   products: ProductId[];
   referral: boolean;
   fullName?: string | null;
+  aiAnalysis?: string | null;
 }) {
   const cc = CONCERN_COPY[concern];
   const sev = SEVERITY_COPY[severity];
@@ -107,13 +111,33 @@ export function ResultView({
         </section>
       )}
 
+      {/* 2b. AI-powered interpretation (prose only — engine still owns safety) */}
+      {aiAnalysis && (
+        <section className="rounded-2xl border border-emerald-400/25 bg-emerald-400/[0.05] p-4">
+          <div className="flex items-center gap-2">
+            <span aria-hidden className="text-emerald-300">
+              ✦
+            </span>
+            <h2 className="text-sm font-bold text-emerald-100">
+              {AI_ANALYSIS_LABEL}
+            </h2>
+          </div>
+          <p className="mt-2 text-sm leading-relaxed text-slate-100">
+            {aiAnalysis}
+          </p>
+          <p className="mt-2 text-[11px] text-slate-500">{AI_ANALYSIS_NOTE}</p>
+        </section>
+      )}
+
       {/* 3. What's happening */}
       <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <h2 className="text-sm font-bold text-white">What&apos;s happening</h2>
         <p className="mt-1 text-sm leading-relaxed text-slate-300">
           {cc.whatsHappening}
         </p>
-        <p className="mt-2 text-xs font-medium text-slate-500">{REVIEWED_BY}</p>
+        {!aiAnalysis && (
+          <p className="mt-2 text-xs font-medium text-slate-500">{REVIEWED_BY}</p>
+        )}
       </section>
 
       {referral ? (

@@ -25,7 +25,7 @@ export default async function ResultPage({
   const { data } = await db
     .from("assessments")
     .select(
-      "full_name, concern, severity, flags, recommended_products, referral_required, status",
+      "full_name, concern, severity, flags, recommended_products, referral_required, ai_analysis, status",
     )
     .eq("result_token", params.token)
     .maybeSingle();
@@ -43,6 +43,7 @@ export default async function ResultPage({
         products={(data.recommended_products ?? []) as ProductId[]}
         referral={!!data.referral_required}
         fullName={data.full_name}
+        aiAnalysis={data.ai_analysis as string | null}
       />
       <Suspense>
         <KioskReset />

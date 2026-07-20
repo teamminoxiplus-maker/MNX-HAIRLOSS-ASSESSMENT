@@ -1,7 +1,7 @@
 // Transactional result email via Resend REST API (spec §5, §9). Built from the
 // same copy.ts blocks as the web result page so email + web never drift.
 // No SDK dependency — a single fetch to Resend. No-ops cleanly if unconfigured.
-import { CONCERN_COPY, DISCLAIMER, FLAG_COPY, REVIEWED_BY, SEVERITY_COPY, TIMELINE, CONSULT_COPY } from "./copy";
+import { AI_ANALYSIS_LABEL, AI_ANALYSIS_NOTE, CONCERN_COPY, DISCLAIMER, FLAG_COPY, REVIEWED_BY, SEVERITY_COPY, TIMELINE, CONSULT_COPY } from "./copy";
 import { PRODUCTS, STOREFRONTS, CONSULT } from "./products";
 import { BUNDLES, recommendBundle } from "./bundles";
 import { formatPHP } from "@/lib/utils";
@@ -12,6 +12,7 @@ interface EmailArgs {
   fullName: string;
   result: EngineResult;
   token: string;
+  aiAnalysis?: string | null;
 }
 
 function esc(s: string): string {
@@ -20,7 +21,7 @@ function esc(s: string): string {
   );
 }
 
-function buildHtml({ fullName, result, token }: EmailArgs): string {
+function buildHtml({ fullName, result, token, aiAnalysis }: EmailArgs): string {
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://minoxiplus.com";
   const cc = CONCERN_COPY[result.concern];
   const sev = SEVERITY_COPY[result.severity];
@@ -105,8 +106,17 @@ function buildHtml({ fullName, result, token }: EmailArgs): string {
           <strong>${esc(sev.label)}</strong>
           <p style="margin:4px 0 0;font-size:13px;color:#475569">${esc(sev.note)}</p>
         </div>
+        ${
+          aiAnalysis
+            ? `<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:12px 14px;margin:12px 0">
+                 <div style="font-size:12px;font-weight:700;color:#047857">✦ ${esc(AI_ANALYSIS_LABEL)}</div>
+                 <p style="margin:6px 0 0;font-size:14px;line-height:1.55;color:#065f46">${esc(aiAnalysis)}</p>
+                 <p style="margin:6px 0 0;font-size:11px;color:#64748b">${esc(AI_ANALYSIS_NOTE)}</p>
+               </div>`
+            : ""
+        }
         <p style="font-size:13px;color:#475569"><em>${esc(cc.whatsHappening)}</em></p>
-        <p style="font-size:12px;color:#64748b">${esc(REVIEWED_BY)}</p>
+        ${aiAnalysis ? "" : `<p style="font-size:12px;color:#64748b">${esc(REVIEWED_BY)}</p>`}
         ${flagLines}
         ${routine}
         ${bundleHtml}

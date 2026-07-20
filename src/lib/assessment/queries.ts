@@ -118,11 +118,6 @@ const STEP_ORDER = [
   "q5",
   "q6",
   "q7",
-  "q8",
-  "q9",
-  "q10",
-  "q11",
-  "q12",
   "contact",
   "result",
 ];
