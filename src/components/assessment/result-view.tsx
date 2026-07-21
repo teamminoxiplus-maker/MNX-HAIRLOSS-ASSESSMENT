@@ -11,9 +11,9 @@ import {
   TIMELINE,
 } from "@/lib/assessment/copy";
 import { CONSULT, PRODUCTS, STOREFRONTS } from "@/lib/assessment/products";
-import { BUNDLES, recommendBundle } from "@/lib/assessment/bundles";
+import { BUNDLES } from "@/lib/assessment/bundles";
 import { formatPHP } from "@/lib/utils";
-import type { Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
+import type { BundleTier, Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
 
 // Severity-meter position for each stage (visual only).
 const METER_PCT: Record<Severity, number> = {
@@ -32,6 +32,7 @@ export function ResultView({
   referral,
   fullName,
   aiAnalysis,
+  recommendedBundle,
 }: {
   concern: Concern;
   severity: Severity;
@@ -40,13 +41,13 @@ export function ResultView({
   referral: boolean;
   fullName?: string | null;
   aiAnalysis?: string | null;
+  recommendedBundle?: BundleTier | null;
 }) {
   const cc = CONCERN_COPY[concern];
   const sev = SEVERITY_COPY[severity];
   const stage = STAGE_COPY[severity];
   const flagLines = flags.map((f) => FLAG_COPY[f]).filter(Boolean) as string[];
-  const bundleId = recommendBundle(concern, severity, products, referral);
-  const bundle = bundleId ? BUNDLES[bundleId] : null;
+  const bundle = recommendedBundle ? BUNDLES[recommendedBundle] : null;
 
   return (
     <div className="space-y-6">

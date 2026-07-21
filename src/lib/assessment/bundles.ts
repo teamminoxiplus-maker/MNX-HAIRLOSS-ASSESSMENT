@@ -1,10 +1,10 @@
-// MNX 3-Month System bundles surfaced on the result page. Which bundle a
-// customer sees is DERIVED from the already-safety-gated engine output, so the
-// men-only rule (TriActive = Minoxidil + Finasteride) is automatically honored:
-// PRO/ADVANCED contain TriActive and are only ever recommended when tri_active
-// survived applySafetyGates() — i.e. an eligible male. Everyone else who still
-// has a minoxidil routine sees STARTER; refer/consult routes see no bundle.
-import type { Concern, ProductId, Severity } from "./types";
+// MNX 3-Month System bundles surfaced on the result page. The tier is driven by
+// SEVERITY + SEX, gated by safety: STARTER for women and mild (Early) cases;
+// eligible men get ADVANCED (Moderate) or PRO (Advanced). PRO/ADVANCED contain
+// TriActive (Minoxidil + Finasteride) so they are men-only; and no bundle is
+// shown when the safety gates stripped the topical routine (e.g. Minoxidil
+// allergy) or forced a consult (pregnancy, under-18, scalp wound).
+import type { Answers, ProductId, Severity } from "./types";
 
 export type BundleId = "STARTER" | "ADVANCED" | "PRO";
 
@@ -153,35 +153,29 @@ export const BUNDLES: Record<BundleId, Bundle> = {
   },
 };
 
-// Pick the bundle to surface. Returns null for referral/consult routes and for
-// concerns where a full regrowth system isn't the right push.
+// Pick the bundle to surface, by SEVERITY + SEX, gated by safety.
 export function recommendBundle(
-  concern: Concern,
   severity: Severity,
+  a: Answers,
   products: ProductId[],
   referral: boolean,
 ): BundleId | null {
-  if (referral || products.length === 0) return null;
+  // Consult/referral routes (patchy already handled, scalp wound, under-18,
+  // pregnancy) never show a bundle.
+  if (referral) return null;
 
-  // TriActive present ⇒ eligible male, moderate/advanced AGA. Advanced adds
-  // microneedling (PRO); moderate is the TriActive system without it (ADVANCED).
-  if (products.includes("tri_active")) {
-    return severity === "Advanced" ? "PRO" : "ADVANCED";
-  }
+  // Every bundle contains Minoxidil (Signature or TriActive). If the safety
+  // gates stripped every topical — e.g. a Minoxidil allergy removed them — do
+  // NOT push a Minoxidil bundle. This keeps the men-only / allergy rules honored.
+  const hasTopicalRoutine =
+    products.includes("signature_hair_grower") || products.includes("tri_active");
+  if (!hasTopicalRoutine) return null;
 
-  // Signature-based Starter system for any hair-loss concern where a Minoxidil
-  // routine survived the safety gates (all female AGA, early male AGA, mixed,
-  // traction, and scalp-driven shedding that also thins). Referral/consult
-  // routes and pure telogen effluvium (temporary shedding) return no bundle.
-  const patternLoss =
-    concern === "AGA_MALE" ||
-    concern === "AGA_FEMALE" ||
-    concern === "MIXED" ||
-    concern === "TRACTION" ||
-    concern === "SEB_DERM";
-  if (patternLoss && products.includes("signature_hair_grower")) {
-    return "STARTER";
-  }
-
-  return null;
+  // ADVANCED/PRO add Finasteride → eligible men only. Women (any severity) and
+  // mild/Early cases get the Minoxidil-based STARTER. Under-18 and pregnancy
+  // already forced a referral above, so they never reach here.
+  const eligibleMan = a.sex === "male" && a.age_band !== "below_18";
+  if (eligibleMan && severity === "Advanced") return "PRO";
+  if (eligibleMan && severity === "Moderate") return "ADVANCED";
+  return "STARTER";
 }

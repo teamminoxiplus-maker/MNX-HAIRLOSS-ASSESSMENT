@@ -5,7 +5,8 @@ import { MinoxShell } from "@/components/assessment/minox-brand";
 import { ResultView } from "@/components/assessment/result-view";
 import { KioskReset } from "@/components/assessment/kiosk-reset";
 import { assessmentDb } from "@/lib/assessment/persist";
-import type { Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
+import { recommendBundle } from "@/lib/assessment/bundles";
+import type { Answers, Concern, EngineFlag, ProductId, Severity } from "@/lib/assessment/types";
 
 export const metadata: Metadata = {
   title: "Your Result — MINOXIPLUS",
@@ -25,7 +26,7 @@ export default async function ResultPage({
   const { data } = await db
     .from("assessments")
     .select(
-      "full_name, concern, severity, flags, recommended_products, referral_required, ai_analysis, status",
+      "full_name, answers, concern, severity, flags, recommended_products, referral_required, ai_analysis, status",
     )
     .eq("result_token", params.token)
     .maybeSingle();
@@ -34,16 +35,29 @@ export default async function ResultPage({
     notFound();
   }
 
+  // Bundle tier is recomputed from the stored answers/derived fields (pure,
+  // deterministic) so no extra column is needed and it always matches the email.
+  const severity = data.severity as Severity;
+  const products = (data.recommended_products ?? []) as ProductId[];
+  const referral = !!data.referral_required;
+  const recommendedBundle = recommendBundle(
+    severity,
+    (data.answers ?? {}) as Answers,
+    products,
+    referral,
+  );
+
   return (
     <MinoxShell>
       <ResultView
         concern={data.concern as Concern}
-        severity={data.severity as Severity}
+        severity={severity}
         flags={(data.flags ?? []) as EngineFlag[]}
-        products={(data.recommended_products ?? []) as ProductId[]}
-        referral={!!data.referral_required}
+        products={products}
+        referral={referral}
         fullName={data.full_name}
         aiAnalysis={data.ai_analysis as string | null}
+        recommendedBundle={recommendedBundle}
       />
       <Suspense>
         <KioskReset />

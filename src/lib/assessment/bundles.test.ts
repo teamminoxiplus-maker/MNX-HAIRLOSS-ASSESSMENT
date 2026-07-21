@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { recommendBundle, BUNDLES } from "./bundles";
+import { BUNDLES } from "./bundles";
 import { runEngine } from "./engine";
 import type { Answers } from "./types";
 
@@ -21,10 +21,7 @@ function base(overrides: Partial<Answers> = {}): Answers {
   };
 }
 
-const bundleFor = (a: Answers) => {
-  const r = runEngine(a);
-  return recommendBundle(r.concern, r.severity, r.recommended_products, r.referral_required);
-};
+const bundleFor = (a: Answers) => runEngine(a).recommended_bundle;
 
 describe("recommendBundle — safety-gated", () => {
   it("PRO/ADVANCED bundles always contain TriActive (men-only)", () => {
@@ -106,5 +103,23 @@ describe("recommendBundle — safety-gated", () => {
         base({ sex: "female", pattern: "widening_part", scalp: ["dandruff"], duration: "gt_3y", shedding: "clumps", family_history: "yes" }),
       ),
     ).toBe("STARTER");
+  });
+
+  it("advanced man with dandruff (SEB_DERM) reaches PRO, not STARTER", () => {
+    // The reported case: Stage 3 dandruff/scalp irritation was capping at Starter.
+    const r = runEngine(
+      base({ sex: "male", pattern: "diffuse", scalp: ["dandruff"], duration: "gt_3y", shedding: "clumps", family_history: "yes" }),
+    );
+    expect(r.concern).toBe("SEB_DERM");
+    expect(r.recommended_bundle).toBe("PRO");
+  });
+
+  it("tier is severity+sex across concerns: STARTER only for women or mild", () => {
+    // eligible man, moderate → ADVANCED regardless of concern
+    expect(bundleFor(base({ sex: "male", pattern: "diffuse", scalp: ["oily"], duration: "1_3y", shedding: "noticeable" }))).toBe("ADVANCED");
+    // eligible man, mild → STARTER
+    expect(bundleFor(base({ sex: "male", pattern: "receding", duration: "lt_6m", shedding: "normal", family_history: "no" }))).toBe("STARTER");
+    // woman, severe → STARTER
+    expect(bundleFor(base({ sex: "female", pattern: "diffuse", scalp: ["dandruff"], duration: "gt_3y", shedding: "clumps", family_history: "yes" }))).toBe("STARTER");
   });
 });

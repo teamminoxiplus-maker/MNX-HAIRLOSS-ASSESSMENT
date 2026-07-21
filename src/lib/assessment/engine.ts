@@ -3,6 +3,7 @@
 //   classify(answers) -> severity(answers) -> mapProducts(...) -> applySafetyGates(...)
 // Safety gates run LAST and can only REMOVE or DOWNGRADE recommendations.
 import { PRODUCTS } from "./products";
+import { recommendBundle } from "./bundles";
 import type {
   Answers,
   Concern,
@@ -263,5 +264,6 @@ export function runEngine(a: Answers): EngineResult {
     flags,
     recommended_products: gated.products,
     referral_required,
+    recommended_bundle: recommendBundle(sev, a, gated.products, referral_required),
   };
 }

@@ -107,12 +107,18 @@ export type ProductId =
   | "scalp_massager"
   | "derma_stamp";
 
+// Bundle tier surfaced on the result. Kept as a string here to avoid a circular
+// import with bundles.ts (which imports from this file); the values are the
+// BundleId union "STARTER" | "ADVANCED" | "PRO".
+export type BundleTier = "STARTER" | "ADVANCED" | "PRO";
+
 export interface EngineResult {
   concern: Concern;
   severity: Severity;
   flags: EngineFlag[];
   recommended_products: ProductId[];
   referral_required: boolean;
+  recommended_bundle: BundleTier | null;
 }
 
 // A stored assessment row (subset used by the admin dashboard, spec §12).

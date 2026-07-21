@@ -3,7 +3,7 @@
 // No SDK dependency — a single fetch to Resend. No-ops cleanly if unconfigured.
 import { AI_ANALYSIS_LABEL, AI_ANALYSIS_NOTE, CONCERN_COPY, DISCLAIMER, FLAG_COPY, REVIEWED_BY, SEVERITY_COPY, TIMELINE, CONSULT_COPY } from "./copy";
 import { PRODUCTS, STOREFRONTS, CONSULT } from "./products";
-import { BUNDLES, recommendBundle } from "./bundles";
+import { BUNDLES } from "./bundles";
 import { formatPHP } from "@/lib/utils";
 import type { EngineResult } from "./types";
 
@@ -52,13 +52,7 @@ function buildHtml({ fullName, result, token, aiAnalysis }: EmailArgs): string {
         })
         .join("");
 
-  const bundleId = recommendBundle(
-    result.concern,
-    result.severity,
-    result.recommended_products,
-    result.referral_required,
-  );
-  const bundle = bundleId ? BUNDLES[bundleId] : null;
+  const bundle = result.recommended_bundle ? BUNDLES[result.recommended_bundle] : null;
   const bundleHtml = bundle
     ? `<div style="background:#0b1f4d;border-radius:12px;padding:18px;margin:16px 0;color:#fff">
          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#93c5fd">Recommended for your stage</div>
